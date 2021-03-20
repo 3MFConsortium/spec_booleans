@@ -13,7 +13,7 @@
 
 
 
-| **Version** | 0.5.1 |
+| **Version** | 0.5.2 |
 | --- | --- |
 | **Status** | Draft |
 
@@ -52,7 +52,7 @@ This extension MUST be used only with Core specification 1.x.
 
 See [the 3MF Core Specification conventions](https://github.com/3MFConsortium/spec_core/blob/1.2.3/3MF%20Core%20Specification.md#document-conventions).
 
-In this extension specification, as an example, the prefix "bo" maps to the xml-namespace "http://schemas.microsoft.com/3dmanufacturing/booleanoperations/2021/02". See [Appendix C. Standard Namespace](#appendix-c-standard-namespace).
+In this extension specification, as an example, the prefix "o" maps to the xml-namespace "http://schemas.microsoft.com/3dmanufacturing/booleanoperations/2021/02". See [Appendix C. Standard Namespace](#appendix-c-standard-namespace).
 
 ## Language Notes
 
@@ -184,8 +184,8 @@ See [the 3MF Core Specification glossary](https://github.com/3MFConsortium/spec_
 ```xml
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <model xmlns="http://schemas.microsoft.com/3dmanufacturing/core/2015/02"
-	xmlns:bo="http://schemas.microsoft.com/3dmanufacturing/booleanoperations/2021/02"
-	requiredextensions="bo" unit="millimeter" xml:lang="en-US">
+	xmlns:o="http://schemas.microsoft.com/3dmanufacturing/booleanoperations/2021/02"
+	requiredextensions="o" unit="millimeter" xml:lang="en-US">
     <resources>
         <object id="11" type="model" name="shuttle">
             <mesh>
@@ -206,13 +206,13 @@ See [the 3MF Core Specification glossary](https://github.com/3MFConsortium/spec_
            </mesh>
         </object>
         <object id="101" type="model" name="model with labels">
-            <components bo:operation="union">
+            <components o:operation="union">
                 <component objectid="2" transform="1.0000 0.0000 0.0000 0.0000 1.0000 0.0000 0.0000 0.0000 1.0000 34.1020 35.1070 5.1000"/>
                 <component objectid="21" transform="1.00000 0.0000 0.0000 0.0000 1.0000 0.0000 0.0000 0.0000 1.000 35.7020 35.7070 5.7000"/>
             </components>
         </object>
         <object id="102" type="model" name="model with engraved label">
-            <components bo:operation="difference">
+            <components o:operation="difference">
                 <component objectid="2" transform="1.0000 0.0000 0.0000 0.0000 1.0000 0.0000 0.0000 0.0000 1.0000 74.1020 35.1070 5.1000"/>
                 <component objectid="22" transform="1.00000 0.0000 0.0000 0.0000 1.0000 0.0000 0.0000 0.0000 1.000 75.7020 35.7070 5.7000"/>
             </components>
