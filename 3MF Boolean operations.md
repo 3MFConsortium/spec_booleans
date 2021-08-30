@@ -13,7 +13,7 @@
 
 
 
-| **Version** | 0.5.2 |
+| **Version** | 0.6.0 |
 | --- | --- |
 | **Status** | Draft |
 
@@ -66,15 +66,13 @@ See [the 3MF Core Specification software conformance](https://github.com/3MFCons
 
 # Chapter 1. Overview of Additions
 
-![Mddel with labels object](images/1.Example.png)
-
-The 3MF Core Specification defines the \<components> element in the \<object> resource as definition of a logical association of different objects to form an assembly, with the intent to allow reuse of model definitions for an efficient encoding. However, it allows that each individual object component to be tracked as a single part in the assembly. The resultant shape of a \<components> element is the aggregation (union) of each \<component> object element.
+The 3MF Core Specification defines the \<components> element in the \<object> resource as definition of a logical association of different objects to form an assembly, with the intent to allow reuse of model definitions for an efficient encoding. However, it allows that each individual object component to be tracked as a single object in the assembly. The resultant shape of a \<components> element is the aggregation (union) of each \<component> object element.
 
 This extension is based in the Constructive Solid Geometry ([CSG](https://en.wikipedia.org/wiki/Constructive_solid_geometry)) which defines a binary tree of operations, and it extends this concept to non-binary tree.
 
 ![CSG binary tree](images/Csg_tree.png)
 
-This document extends that definition by defining whether the components are a logical association (assembly) or define a boolean operation to merge the objects as a physical association (single part).
+This document extends that definition by defining whether the components are a logical association (assembly) or define a boolean operation to merge the objects as a physical association (single object).
 
 This document describes a new attribute in the \<components> elements to describe the association of objects. This attributes is OPTIONAL for producers but MUST be supported by consumers that specify support for the 3MF Boolean Operations Extension.
 
@@ -187,40 +185,51 @@ See [the 3MF Core Specification glossary](https://github.com/3MFConsortium/spec_
 	xmlns:o="http://schemas.microsoft.com/3dmanufacturing/booleanoperations/2021/02"
 	requiredextensions="o" unit="millimeter" xml:lang="en-US">
     <resources>
-        <object id="11" type="model" name="shuttle">
+        <basematerials id="2">
+          <base name="Red" displaycolor="#FF0000" />
+          <base name="Green" displaycolor="#00FF00" />
+          <base name="Blue" displaycolor="#0000FF" />
+        <basematerials>
+        <object id="3" type="model" name="Cylinder" pid="2" pindex="1">
             <mesh>
                 <vertices>...</vertices>
                 <triangles>...</triangles>
             </mesh>
         </object>
-        <object id="21" type="model" name="OV-104">
+        <object id="4" type="model" name="Cube" pid="2" pindex="0">
             <mesh>
                 <vertices>...</vertices>
                 <triangles>...</triangles>
             </mesh>
         </object>
-        <object id="22" type="model" name="Atlantis">
+        <object id="5" type="model" name="Sphere" pid="2" pindex="2">
             <mesh>
                 <vertices>...</vertices>
                 <triangles>...</triangles>
            </mesh>
         </object>
-        <object id="101" type="model" name="model with labels">
+        <object id="6" type="model" name="Union">
             <components o:operation="union">
-                <component objectid="2" transform="1.0000 0.0000 0.0000 0.0000 1.0000 0.0000 0.0000 0.0000 1.0000 34.1020 35.1070 5.1000"/>
-                <component objectid="21" transform="1.00000 0.0000 0.0000 0.0000 1.0000 0.0000 0.0000 0.0000 1.000 35.7020 35.7070 5.7000"/>
+                <component objectid="3" transform="0.0271726 0 0 0 0 0.0271726 0 -0.0680034 0 4.15442 3.58836 5.23705" />
+                <component objectid="3" transform="0.0272014 0 0 0 0.0272012 0 0 0 0.0680035 4.05357 6.33412 3.71548" />
+                <component objectid="3" transform="0 0 -0.0272013 0 0.0272013 0 0.0680032 0 0 5.05103 6.32914 3.35287" />
             </components>
         </object>
-        <object id="102" type="model" name="model with engraved label">
-            <components o:operation="difference">
-                <component objectid="2" transform="1.0000 0.0000 0.0000 0.0000 1.0000 0.0000 0.0000 0.0000 1.0000 74.1020 35.1070 5.1000"/>
-                <component objectid="22" transform="1.00000 0.0000 0.0000 0.0000 1.0000 0.0000 0.0000 0.0000 1.000 75.7020 35.7070 5.7000"/>
+        <object id="7" type="model" name="Insersection">
+            <components o:operation="intersection">
+                <component objectid="4" transform="0.0741111 0 0 0 0.0741111 0 0 0 0.0741111 2.91124 -0.400453 1.60607" />
+                <component objectid="5" transform="0.0921218 0 0 0 0.0893995 0 0 0 0.0873415 2.52016 2.37774 2.21481" />
             </components>
         </object>
-     </resources>
+        <object id="11" type="model" name="Difference">
+           <components o:operation="difference">
+              <component objectid="7" />
+              <component objectid="6"/>
+          </components>
+        </object>
+    </resources>
     <build>
-        <item objectid="101"/>
-        <item objectid="102"/>
+        <item objectid="11" transform="25.4 0 0 0 25.4 0 0 0 25.4 0 0 0" />
     </build>
 </model>
 ```
