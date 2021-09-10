@@ -13,7 +13,7 @@
 
 
 
-| **Version** | 0.6.0 |
+| **Version** | 0.6.1 |
 | --- | --- |
 | **Status** | Draft |
 
@@ -27,7 +27,7 @@
 - [Part I: 3MF Documents](#part-i-3mf-documents)
   * [Chapter 1. Overview of Additions](#chapter-1-overview-of-additions)
   * [Chapter 2. Components](#chapter-2-components)
-- [Part II. Appendixes](#part-ii-appendixes)
+- [Part II. Appendices](#part-ii-appendices)
   * [Appendix A. Glossary](#appendix-a-glossary)
   * [Appendix B. 3MF XSD Schema](#appendix-b-3mf-xsd-schema)
   * [Appendix C. Standard Namespace](#appendix-c-standard-namespace)
@@ -42,7 +42,7 @@ This 3MF Boolean Operations Extension is an extension to the core 3MF specificat
 
 Part I, “3MF Documents,” presents the details of the primarily XML-based 3MF Document format. This section describes the XML markup that defines the composition of 3D documents and the appearance of each model within the document.
 
-Part II, “Appendixes,” contains additional technical details and schemas too extensive to include in the main body of the text as well as convenient reference information.
+Part II, “Appendices,” contains additional technical details and schemas too extensive to include in the main body of the text as well as convenient reference information.
 
 The information contained in this specification is subject to change. Every effort has been made to ensure its accuracy at the time of publication.
 
@@ -125,7 +125,7 @@ The options for the operations are the following:
 
 The boolean operations follow the fill rule conversion defined by See [the 3MF Core Specification fill rule](https://github.com/3MFConsortium/spec_core/blob/1.2.3/3MF%20Core%20Specification.md#411-fill-rule).
 
-# Part II. Appendixes
+# Part II. Appendices
 
 ## Appendix A. Glossary
 
