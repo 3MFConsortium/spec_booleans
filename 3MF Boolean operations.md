@@ -13,7 +13,7 @@
 
 
 
-| **Version** | 0.6.1 |
+| **Version** | 0.7.0 |
 | --- | --- |
 | **Status** | Draft |
 
@@ -26,7 +26,7 @@
   * [Software Conformance](#software-conformance)
 - [Part I: 3MF Documents](#part-i-3mf-documents)
   * [Chapter 1. Overview of Additions](#chapter-1-overview-of-additions)
-  * [Chapter 2. Components](#chapter-2-components)
+  * [Chapter 2. Boolean Operations](#chapter-2-boolean-operations)
 - [Part II. Appendices](#part-ii-appendices)
   * [Appendix A. Glossary](#appendix-a-glossary)
   * [Appendix B. 3MF XSD Schema](#appendix-b-3mf-xsd-schema)
@@ -52,7 +52,7 @@ This extension MUST be used only with Core specification 1.x.
 
 See [the 3MF Core Specification conventions](https://github.com/3MFConsortium/spec_core/blob/1.2.3/3MF%20Core%20Specification.md#document-conventions).
 
-In this extension specification, as an example, the prefix "o" maps to the xml-namespace "http://schemas.microsoft.com/3dmanufacturing/booleanoperations/2021/02". See [Appendix C. Standard Namespace](#appendix-c-standard-namespace).
+In this extension specification, as an example, the prefix "o" maps to the xml-namespace "http://schemas.microsoft.com/3dmanufacturing/booleanoperations/2022/06". See [Appendix C. Standard Namespace](#appendix-c-standard-namespace).
 
 ## Language Notes
 
@@ -66,64 +66,65 @@ See [the 3MF Core Specification software conformance](https://github.com/3MFCons
 
 # Chapter 1. Overview of Additions
 
-The 3MF Core Specification defines the \<components> element in the \<object> resource as definition of a logical association of different objects to form an assembly, with the intent to allow reuse of model definitions for an efficient encoding. However, it allows that each individual object component to be tracked as a single object in the assembly. The resultant shape of a \<components> element is the aggregation (union) of each \<component> object element.
+The 3MF Core Specification defines the \<components> element in the \<object> resource as definition of a logical association of different objects to form an assembly, with the intent to allow reuse of model definitions for an efficient encoding. The resultant shape of a \<components> element is the aggregation (union) of each \<component> object element.
 
-This extension is based in the Constructive Solid Geometry ([CSG](https://en.wikipedia.org/wiki/Constructive_solid_geometry)) which defines a binary tree of operations, and it extends this concept to non-binary tree.
+This extension is based in a simplified Constructive Solid Geometry ([CSG](https://en.wikipedia.org/wiki/Constructive_solid_geometry)) by limiting the scope of the subtracting boolean operations: difference and intersect.
 
 ![CSG binary tree](images/Csg_tree.png)
 
-This document extends that definition by defining whether the components are a logical association (assembly) or define a boolean operation to merge the objects as a physical association (single object).
+This document describes a new element \<booleanoperations> in the \<object> elements that specify options subtracting operations. This element is OPTIONAL for producers but MUST be supported by consumers that specify support for the 3MF Boolean Operations Extension.
 
-This document describes a new attribute in the \<components> elements to describe the association of objects. This attributes is OPTIONAL for producers but MUST be supported by consumers that specify support for the 3MF Boolean Operations Extension.
-
-To avoid data loss while parsing, a 3MF package which uses referenced objects MUST enlist the 3MF Boolean Operations Extension as “required extension”, as defined in the core specification. However if the 3MF Boolean Operations Extension is not enlisted a required, any consumer non-supporting the 3MF Boolean Operations Extension may be able to process the rest of the document.
+To avoid data loss while parsing, a 3MF package which uses referenced objects MUST enlist the 3MF Boolean Operations Extension as “required extension”, as defined in the core specification. However, if the 3MF Boolean Operations Extension is not enlisted a required, any consumer non-supporting the 3MF Boolean Operations Extension may be able to process the rest of the document.
 
 ##### Figure 1-1: Overview of 3MF Boolean Operations Extension XML structure
 
 ![OPC organization](images/1.1.xsd_overview.png)
 
-# Chapter 2. Components
+# Chapter 2. Boolean Operations
 
-Element \<components>
+Element \<booleanoperations>
 
-![Components](images/2.components.png)
+![Boolean Operations](images/2.booleanoperations.png)
 
-The \<components> element in the [the 3MF Core Specification](https://github.com/3MFConsortium/spec_core/blob/1.2.3/3MF%20Core%20Specification.md#42-components) is enhanced by new attributes to define the compenents association.
+The optional \<booleanoperations> element contains one or more \<boolean> elements to perform subtractive boolean operations to the mesh or components elements in the enclosing object.
+
+The boolean operations are iteratively applied in the order defined by the \<boolean> sequence.
+
+## 2.1. Boolean
+
+Element \<boolean>
+
+![Boolean](images/2.1.boolean.png)
 
 | Name   | Type   | Use   | Default   | Annotation |
 | --- | --- | --- | --- | --- |
-| operation | **ST\_BooleanOperation** |  | none | Boolean operation: union, difference or intersection operations, or none when no operation is specified |
+| objectid | **ST\_ResourceID** | required | | It references an object id performing the boolean operation. |
+| operation | **ST\_Operation** | required | | Subtracting boolean operation |
+| transform | **ST\_Matrix3D** | | | A matrix transform (see [3.3. 3D Matrices](#33-3d-matrices)) applied to the item to be outputted. |
+| path | **ST\_Path** | | | A file path to the model file being referenced. The path is an absolute path from the root of the 3MF container. |
 | @anyAttribute | | | | |
 
-The \<components> element is enhanced the the following attributes:
+The \<boolean> element selects a pre-defined object resource to be booleaned to the mesh or component tree in the enclosing object.
 
-**operation** - The boolean operation to perform, of "none" for no operacion.
+**objectid** - Selects the object with the mesh or component to subtract. The object MUST be a mesh object of type "model" (i.e. not a components object), and MUST NOT contain a Boolean Operation.
 
-It starts by performing the boolean operation to the first components with the second component, if available. If more components are available, it iterativelly performs the boolean operation from previous result and next component.
+**operation** - The subtracting boolean operation to perform. The options for the subtracting operations are the following:
 
-The options for the operations are the following:
+1.  *difference*. The new object shape is defined by the shape in the enclosing object shape that is not in the subtracting object shape. The new object surface property, where overlaps, is defined by the object surface property of the subtracting object(s).
 
-1.  *none*. No operation is specified. The \<components> element specifies an assembly of objects.
+2.  *intersection*. The new object shape is defined as the common (clipping) shape in all objects. The new object surface property is defined as the object surface property of the object clipping that surface.
 
-2.	*union*. The new object shape is defined as the merger of the shapes. The new object surface property is defined by the property of the surface property defining the outer surface. If material and the volumetric property, if available, in the overlapped volume is defined by the added object.
+>**Note:** The "operation" attribute does not define a *union* operation, since it is implicit performed by the components tree, as defined by [the 3MF Core Specification Components](https://github.com/3MFConsortium/spec_core/blob/1.2.3/3MF%20Core%20Specification.md#42-components).
 
-    union(a,b,c,d) = ((a Ս b) Ս c) Ս d
+**transform** - The transform to apply to the selected object before the boolean operation.
 
-3.  *difference*. The new object shape is defined by the shape in the first object shape that is not in any other object shape. The new object surface property, where overlaps, is defined by the object surface property of the substracting object(s).
-
-    difference(a,b,c,d) = ((a - b) - c) - d = a - union(b,c,d)
-
-4.  *intersection*. The new object shape is defined as the common (clipping) shape in all objects. The new object surface property is defined as the object surface property of the object clipping that surface.
-
-    intersection(a,b,c,d) = ((a Ո b) Ո c) Ո d
-
->**Note:** Since a component may refers to another object component as a tree of object components, once an object components is defined with a boolean operation (ie. merging models), all components in the subtree below MUST also be merged with a boolean operation. If not specified, the default boolean operation "none" MUST be treated as a "union". 
+**path** - When used in conjunction with [the 3MF Production extension](https://github.com/3MFConsortium/spec_production/blob/master/3MF%20Production%20Extension.md), the "path" attribute references objects in non-root model files. Path is an absolute path to the target model file inside the 3MF container that contains the target object. The use of the path attribute in a \<boolean> element is ONLY valid in the root model file.
 
 | ![operation = union](images/Boolean_union.png) | ![operation = difference](images/Boolean_difference.png) | ![operation = intersection](images/Boolean_intersect.png) |
 | :---: | :---: | :---: |
-| **union**: merger of objects into one | **difference**: subtraction of object from another one| **intersection**: portion common to objects |
+| **union**: components of objects | **difference**: subtraction of object from another one | **intersection**: portion common to objects |
 
-The boolean operations follow the fill rule conversion defined by See [the 3MF Core Specification fill rule](https://github.com/3MFConsortium/spec_core/blob/1.2.3/3MF%20Core%20Specification.md#411-fill-rule).
+The boolean operations follow the fill rule conversion defined by [the 3MF Core Specification fill rule](https://github.com/3MFConsortium/spec_core/blob/1.2.3/3MF%20Core%20Specification.md#411-fill-rule).
 
 # Part II. Appendices
 
@@ -135,10 +136,12 @@ See [the 3MF Core Specification glossary](https://github.com/3MFConsortium/spec_
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns="http://schemas.microsoft.com/3dmanufacturing/booleanoperations/2021/02" xmlns:xs="http://www.w3.org/2001/XMLSchema" 
-  targetNamespace="http://schemas.microsoft.com/3dmanufacturing/booleanoperations/2021/02" 
+<xs:schema xmlns="http://schemas.microsoft.com/3dmanufacturing/booleanoperations/2022/06"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="http://schemas.microsoft.com/3dmanufacturing/booleanoperations/2022/06"
   elementFormDefault="unqualified" attributeFormDefault="unqualified" blockDefault="#all">
-  <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="http://www.w3.org/2001/xml.xsd"/>
+  <xs:import namespace="http://www.w3.org/XML/1998/namespace"
+    schemaLocation="http://www.w3.org/2001/xml.xsd"/>
   <xs:annotation>
     <xs:documentation><![CDATA[   Schema notes: 
  
@@ -151,30 +154,49 @@ See [the 3MF Core Specification glossary](https://github.com/3MFConsortium/spec_
   ]]></xs:documentation>
   </xs:annotation>
   <!-- Complex Types -->
-  <xs:complexType name="CT_Components">
-    <xs:attribute name="operation" type="ST_BooleanOperation" default="none"/>
+  <xs:complexType name="CT_Object">
+    <xs:sequence>
+      <xs:element ref="booleanoperations" minOccurs="0" maxOccurs="1"/>
+      <xs:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="2147483647"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="CT_BooleanOperations">
+    <xs:sequence>
+      <xs:element ref="boolean" minOccurs="0" maxOccurs="2147483647"/>
+      <xs:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="2147483647"/>
+    </xs:sequence>
     <xs:anyAttribute namespace="##other" processContents="lax"/>
-  </xs:complexType> 
-  <xs:simpleType name="ST_BooleanOperation">
+  </xs:complexType>
+
+  <xs:complexType name="CT_Boolean">
+    <xs:attribute name="objectid" type="ST_ResourceID" use="required"/>
+    <xs:attribute name="operation" type="ST_Operation" use="required"/>
+    <xs:attribute name="transform" type="ST_Matrix3D"/>
+    <xs:attribute name="path" type="ST_Path"/>
+    <xs:anyAttribute namespace="##other" processContents="lax"/>
+  </xs:complexType>
+
+  <!-- Simple Types -->
+  <xs:simpleType name="ST_Operation">
     <xs:restriction base="xs:string">
-      <xs:enumeration value="none"/>
-      <xs:enumeration value="union"/>
       <xs:enumeration value="difference"/>
       <xs:enumeration value="intersection"/>
     </xs:restriction>
-  </xs:simpleType>
-  
-  <!-- Elements -->
-  <xs:element name="components" type="CT_Components"/>
-</xs:schema>
+  </xs:simpleType>  
 
+  <!-- Elements -->
+  <xs:element name="object" type="CT_Object"/>
+  <xs:element name="booleanoperations" type="CT_BooleanOperations"/>
+  <xs:element name="boolean" type="CT_Boolean"/>
+</xs:schema>
 ```
 
 # Appendix C. Standard Namespace
 
 | | |
 | --- | --- |
-| BooleanOperation | [http://schemas.microsoft.com/3dmanufacturing/booleanoperations/2021/02](http://schemas.microsoft.com/3dmanufacturing/booleanoperations/2021/02) |
+| BooleanOperation | [http://schemas.microsoft.com/3dmanufacturing/booleanoperations/2022/06](http://schemas.microsoft.com/3dmanufacturing/booleanoperations/2022/06) |
 
 # Appendix D: Example file
 
@@ -182,7 +204,7 @@ See [the 3MF Core Specification glossary](https://github.com/3MFConsortium/spec_
 ```xml
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <model xmlns="http://schemas.microsoft.com/3dmanufacturing/core/2015/02"
-	xmlns:o="http://schemas.microsoft.com/3dmanufacturing/booleanoperations/2021/02"
+	xmlns:o="http://schemas.microsoft.com/3dmanufacturing/booleanoperations/2022/06"
 	requiredextensions="o" unit="millimeter" xml:lang="en-US">
     <resources>
         <basematerials id="2">
@@ -190,46 +212,45 @@ See [the 3MF Core Specification glossary](https://github.com/3MFConsortium/spec_
           <base name="Green" displaycolor="#00FF00" />
           <base name="Blue" displaycolor="#0000FF" />
         <basematerials>
-        <object id="3" type="model" name="Cylinder" pid="2" pindex="1">
+        <object id="3" type="model" name="Cube" pid="2" pindex="0">
             <mesh>
                 <vertices>...</vertices>
                 <triangles>...</triangles>
             </mesh>
         </object>
-        <object id="4" type="model" name="Cube" pid="2" pindex="0">
-            <mesh>
-                <vertices>...</vertices>
-                <triangles>...</triangles>
-            </mesh>
-        </object>
-        <object id="5" type="model" name="Sphere" pid="2" pindex="2">
+        <object id="4" type="model" name="Sphere" pid="2" pindex="2">
             <mesh>
                 <vertices>...</vertices>
                 <triangles>...</triangles>
            </mesh>
         </object>
-        <object id="6" type="model" name="Union">
-            <components o:operation="union">
-                <component objectid="3" transform="0.0271726 0 0 0 0 0.0271726 0 -0.0680034 0 4.15442 3.58836 5.23705" />
-                <component objectid="3" transform="0.0272014 0 0 0 0.0272012 0 0 0 0.0680035 4.05357 6.33412 3.71548" />
-                <component objectid="3" transform="0 0 -0.0272013 0 0.0272013 0 0.0680032 0 0 5.05103 6.32914 3.35287" />
-            </components>
+        <object id="5" type="model" name="Cylinder" pid="2" pindex="1">
+            <mesh>
+                <vertices>...</vertices>
+                <triangles>...</triangles>
+            </mesh>
         </object>
-        <object id="7" type="model" name="Insersection">
-            <components o:operation="intersection">
-                <component objectid="4" transform="0.0741111 0 0 0 0.0741111 0 0 0 0.0741111 2.91124 -0.400453 1.60607" />
-                <component objectid="5" transform="0.0921218 0 0 0 0.0893995 0 0 0 0.0873415 2.52016 2.37774 2.21481" />
+        <object id="6" type="model" name="Intersected">
+            <components>
+                <component objectid="3" transform="0.0741111 0 0 0 0.0741111 0 0 0 0.0741111 2.91124 -0.400453 1.60607" />
             </components>
+            <booleanoperations>
+                <boolean objectid="4" bo:operation="intersection" transform="0.0741111 0 0 0 0.0741111 0 0 0 0.0741111 2.91124 -0.400453 1.60607"/>
+            </booleanoperations>
         </object>
-        <object id="11" type="model" name="Difference">
-           <components o:operation="difference">
-              <component objectid="7" />
-              <component objectid="6"/>
-          </components>
+        <object id="10" type="model" name="Full part">
+            <components>
+                <component objectid="6"/>
+            </components>
+            <booleanoperations>
+                <boolean objectid="5" bo:operation="difference" transform="0.0271726 0 0 0 0 0.0271726 0 -0.0680034 0 4.15442 3.58836 5.23705" />
+                <boolean objectid="5" bo:operation="difference" transform="0.0272014 0 0 0 0.0272012 0 0 0 0.0680035 4.05357 6.33412 3.71548" />
+                <boolean objectid="5" bo:operation="difference" transform="0 0 -0.0272013 0 0.0272013 0 0.0680032 0 0 5.05103 6.32914 3.35287" />
+            </booleanoperations>
         </object>
     </resources>
     <build>
-        <item objectid="11" transform="25.4 0 0 0 25.4 0 0 0 25.4 0 0 0" />
+        <item objectid="10" transform="25.4 0 0 0 25.4 0 0 0 25.4 0 0 0" />
     </build>
 </model>
 ```
