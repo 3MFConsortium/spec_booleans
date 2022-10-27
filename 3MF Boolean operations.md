@@ -50,31 +50,29 @@ This extension MUST be used only with Core specification 1.x.
 
 ## Document Conventions
 
-See [the 3MF Core Specification conventions](https://github.com/3MFConsortium/spec_core/blob/1.2.3/3MF%20Core%20Specification.md#document-conventions).
+See [the 3MF Core Specification conventions](https://github.com/3MFConsortium/spec_core/blob/1.3.0/3MF%20Core%20Specification.md#document-conventions).
 
 In this extension specification, as an example, the prefix "o" maps to the xml-namespace "http://schemas.microsoft.com/3dmanufacturing/booleanoperations/2021/02". See [Appendix C. Standard Namespace](#appendix-c-standard-namespace).
 
 ## Language Notes
 
-See [the 3MF Core Specification language notes](https://github.com/3MFConsortium/spec_core/blob/1.2.3/3MF%20Core%20Specification.md#language-notes).
+See [the 3MF Core Specification language notes](https://github.com/3MFConsortium/spec_core/blob/1.3.0/3MF%20Core%20Specification.md#language-notes).
 
 ## Software Conformance
 
-See [the 3MF Core Specification software conformance](https://github.com/3MFConsortium/spec_core/blob/1.2.3/3MF%20Core%20Specification.md#software-conformance).
+See [the 3MF Core Specification software conformance](https://github.com/3MFConsortium/spec_core/blob/1.3.0/3MF%20Core%20Specification.md#software-conformance).
 
 # Part I: 3MF Documents
 
 # Chapter 1. Overview of Additions
 
-The 3MF Core Specification defines the \<components> element in the \<object> resource as definition of a logical association of different objects to form an assembly, with the intent to allow reuse of model definitions for an efficient encoding. However, it allows that each individual object component to be tracked as a single object in the assembly. The resultant shape of a \<components> element is the aggregation (union) of each \<component> object element.
+The 3MF Core Specification defines the <components> element in the <object> resource as definition of a logical association of different objects to form an assembly, with the intent to allow reuse of model definitions for an efficient encoding. The resultant shape of a <components> element is the aggregation (union) of each <component> object element.
 
-This extension is based in the Constructive Solid Geometry ([CSG](https://en.wikipedia.org/wiki/Constructive_solid_geometry)) which defines a binary tree of operations, and it extends this concept to non-binary tree.
+This extension is based in a simplified Constructive Solid Geometry ([CSG](https://en.wikipedia.org/wiki/Constructive_solid_geometry)) which defines a binary tree of operations, and it extends this concept to non-binary tree. To reduce complexity, the scope of the subtracting boolean operations (difference and intersect) is limited.
 
 ![CSG binary tree](images/Csg_tree.png)
 
-This document extends that definition by defining whether the components are a logical association (assembly) or define a boolean operation to merge the objects as a physical association (single object).
-
-This document describes a new attribute in the \<components> elements to describe the association of objects. This attributes is OPTIONAL for producers but MUST be supported by consumers that specify support for the 3MF Boolean Operations Extension.
+This document extends the \<components> element by defining a boolean operation performed on the components.
 
 To avoid data loss while parsing, a 3MF package which uses referenced objects MUST enlist the 3MF Boolean Operations Extension as “required extension”, as defined in the core specification. However if the 3MF Boolean Operations Extension is not enlisted a required, any consumer non-supporting the 3MF Boolean Operations Extension may be able to process the rest of the document.
 
@@ -88,48 +86,46 @@ Element \<components>
 
 ![Components](images/2.components.png)
 
-The \<components> element in the [the 3MF Core Specification](https://github.com/3MFConsortium/spec_core/blob/1.2.3/3MF%20Core%20Specification.md#42-components) is enhanced by new attributes to define the compenents association.
+The \<components> element in the [the 3MF Core Specification](https://github.com/3MFConsortium/spec_core/blob/1.3.0/3MF%20Core%20Specification.md#42-components) is enhanced by new attributes to define the compenents association.
 
 | Name   | Type   | Use   | Default   | Annotation |
 | --- | --- | --- | --- | --- |
-| operation | **ST\_BooleanOperation** |  | none | Boolean operation: union, difference or intersection operations, or none when no operation is specified |
+| operation | **ST\_BooleanOperation** |  | union | Boolean operation: union, difference or intersection operations. |
 | @anyAttribute | | | | |
 
 The \<components> element is enhanced the the following attributes:
 
-**operation** - The boolean operation to perform, of "none" for no operacion.
+**operation** - The boolean operation to perform.
 
 It starts by performing the boolean operation to the first components with the second component, if available. If more components are available, it iterativelly performs the boolean operation from previous result and next component.
 
 The options for the operations are the following:
 
-1.  *none*. No operation is specified. The \<components> element specifies an assembly of objects.
-
-2.	*union*. The new object shape is defined as the merger of the shapes. The new object surface property is defined by the property of the surface property defining the outer surface. If material and the volumetric property, if available, in the overlapped volume is defined by the added object.
+1.	*union*. The new object shape is defined as the merger of the shapes. The new object surface property is defined by the property of the surface property defining the outer surface. If material and the volumetric property, if available, in the overlapped volume is defined by the added object.
 
     union(a,b,c,d) = ((a Ս b) Ս c) Ս d
 
-3.  *difference*. The new object shape is defined by the shape in the first object shape that is not in any other object shape. The new object surface property, where overlaps, is defined by the object surface property of the substracting object(s).
+2.  *difference*. The new object shape is defined by the shape in the first object shape that is not in any other object shape. The new object surface property, where overlaps, is defined by the object surface property of the substracting object(s).
 
     difference(a,b,c,d) = ((a - b) - c) - d = a - union(b,c,d)
 
-4.  *intersection*. The new object shape is defined as the common (clipping) shape in all objects. The new object surface property is defined as the object surface property of the object clipping that surface.
+3.  *intersection*. The new object shape is defined as the common (clipping) shape in all objects. The new object surface property is defined as the object surface property of the object clipping that surface.
 
     intersection(a,b,c,d) = ((a Ո b) Ո c) Ո d
 
->**Note:** Since a component may refers to another object component as a tree of object components, once an object components is defined with a boolean operation (ie. merging models), all components in the subtree below MUST also be merged with a boolean operation. If not specified, the default boolean operation "none" MUST be treated as a "union". 
+When specifying a _difference_ or a _intersection_, those subtracting or intersecting objects MUST only contain an object or a tree of components with shapes defined in  [the 3MF Core Specification](https://github.com/3MFConsortium/spec_core/blob/1.3.0/3MF%20Core%20Specification.md#41-mesh) and no other extension, and in turn MUST NOT contain any other _difference_ or a _intersection_ operation.
 
 | ![operation = union](images/Boolean_union.png) | ![operation = difference](images/Boolean_difference.png) | ![operation = intersection](images/Boolean_intersect.png) |
 | :---: | :---: | :---: |
 | **union**: merger of objects into one | **difference**: subtraction of object from another one| **intersection**: portion common to objects |
 
-The boolean operations follow the fill rule conversion defined by See [the 3MF Core Specification fill rule](https://github.com/3MFConsortium/spec_core/blob/1.2.3/3MF%20Core%20Specification.md#411-fill-rule).
+The boolean operations follow the fill rule conversion defined by See [the 3MF Core Specification fill rule](https://github.com/3MFConsortium/spec_core/blob/1.3.0/3MF%20Core%20Specification.md#411-fill-rule).
 
 # Part II. Appendices
 
 ## Appendix A. Glossary
 
-See [the 3MF Core Specification glossary](https://github.com/3MFConsortium/spec_core/blob/1.2.3/3MF%20Core%20Specification.md#appendix-a-glossary).
+See [the 3MF Core Specification glossary](https://github.com/3MFConsortium/spec_core/blob/1.3.0/3MF%20Core%20Specification.md#appendix-a-glossary).
 
 ## Appendix B. 3MF XSD Schema
 
@@ -152,12 +148,11 @@ See [the 3MF Core Specification glossary](https://github.com/3MFConsortium/spec_
   </xs:annotation>
   <!-- Complex Types -->
   <xs:complexType name="CT_Components">
-    <xs:attribute name="operation" type="ST_BooleanOperation" default="none"/>
+    <xs:attribute name="operation" type="ST_BooleanOperation" default="union"/>
     <xs:anyAttribute namespace="##other" processContents="lax"/>
   </xs:complexType> 
   <xs:simpleType name="ST_BooleanOperation">
     <xs:restriction base="xs:string">
-      <xs:enumeration value="none"/>
       <xs:enumeration value="union"/>
       <xs:enumeration value="difference"/>
       <xs:enumeration value="intersection"/>
@@ -242,4 +237,4 @@ From Wikipedia, the free encyclopedia. "Constructive solid geometry". https://en
 
 Cornelia Haslinger, Universität Salzburg. "Constructive Solid Geometry in Education". https://www.uni-salzburg.at/fileadmin/multimedia/Mathematik/images/EMMA/Workshop_Turkey/education_days/CSG_Haslinger_low_quality.pdf.
 
-See the [3MF Core Specification references](https://github.com/3MFConsortium/spec_core/blob/1.2.3/3MF%20Core%20Specification.md#references) for additional references.
+See the [3MF Core Specification references](https://github.com/3MFConsortium/spec_core/blob/1.3.0/3MF%20Core%20Specification.md#references) for additional references.
