@@ -88,7 +88,7 @@ Element \<booleanoperations>
 
 The optional \<booleanoperations> element contains one or more \<boolean> elements to perform subtractive boolean operations to the mesh or components elements in the enclosing object.
 
-The boolean operations are iteratively applied in the order defined by the \<boolean> sequence.
+The boolean operations are sequentially applied in the order defined by the \<boolean> sequence.
 
 ## 2.1. Boolean
 
@@ -98,15 +98,15 @@ Element \<boolean>
 
 | Name   | Type   | Use   | Default   | Annotation |
 | --- | --- | --- | --- | --- |
-| objectid | **ST\_ResourceID** | required | | It references an object id performing the boolean operation. |
+| objectid | **ST\_ResourceID** | required | | It references the mesh object id performing the boolean operation. |
 | operation | **ST\_Operation** | required | | Subtracting boolean operation |
 | transform | **ST\_Matrix3D** | | | A matrix transform (see [3.3. 3D Matrices](#33-3d-matrices)) applied to the item to be outputted. |
 | path | **ST\_Path** | | | A file path to the model file being referenced. The path is an absolute path from the root of the 3MF container. |
 | @anyAttribute | | | | |
 
-The \<boolean> element selects a pre-defined object resource to be booleaned to the mesh or component tree in the enclosing object.
+The \<boolean> element selects a pre-defined object resource to perform a boolean operation to the mesh or component tree in the enclosing object.
 
-**objectid** - Selects the object with the mesh or component to subtract. The object MUST be a mesh object of type "model" (i.e. not a components object), and MUST NOT contain a Boolean Operation.
+**objectid** - Selects the object with the mesh to subtract. The object MUST be a triangle mesh object of type "model" (i.e. not a components object), and MUST NOT contain a Boolean Operation.
 
 **operation** - The subtracting boolean operation to perform. The options for the subtracting operations are the following:
 
