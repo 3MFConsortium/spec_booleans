@@ -13,7 +13,7 @@
 
 
 
-| **Version** | 0.7.0 |
+| **Version** | 0.7.5 |
 | --- | --- |
 | **Status** | Draft |
 
@@ -86,7 +86,20 @@ Element \<booleanoperations>
 
 ![Boolean Operations](images/2.booleanoperations.png)
 
+| Name   | Type   | Use   | Default   | Annotation |
+| --- | --- | --- | --- | --- |
+| objectid | **ST\_ResourceID** | required | | It references the object object id to apply the boolean operations |
+| transform | **ST\_Matrix3D** | | | A matrix transform (see [3.3. 3D Matrices](#33-3d-matrices)) applied to the item to be outputted. |
+| path | **ST\_Path** | | | A file path to the object file being referenced. The path is an absolute path from the root of the 3MF container. |
+| @anyAttribute | | | | |
+
 The optional \<booleanoperations> element contains one or more \<boolean> elements to perform subtractive boolean operations to the mesh or components elements in the enclosing object.
+
+**objectid** - Selects the object with the base object to be subtracted.
+
+**transform** - The transform to apply to the selected base object.
+
+**path** - When used in conjunction with [the 3MF Production extension](https://github.com/3MFConsortium/spec_production/blob/master/3MF%20Production%20Extension.md), the "path" attribute references objects in non-root model files. Path is an absolute path to the target model file inside the 3MF container that contains the target object. The use of the path attribute in a \<boolean> element is ONLY valid in the root model file.
 
 The boolean operations are sequentially applied in the order defined by the \<boolean> sequence.
 
@@ -156,8 +169,10 @@ See [the 3MF Core Specification glossary](https://github.com/3MFConsortium/spec_
   <!-- Complex Types -->
   <xs:complexType name="CT_Object">
     <xs:sequence>
-      <xs:element ref="booleanoperations" minOccurs="0" maxOccurs="1"/>
-      <xs:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="2147483647"/>
+      <xs:choice>
+        <xs:element ref="booleanoperations"/>
+        <xs:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="2147483647"/>
+      </xs:choice>
     </xs:sequence>
   </xs:complexType>
 
@@ -166,6 +181,9 @@ See [the 3MF Core Specification glossary](https://github.com/3MFConsortium/spec_
       <xs:element ref="boolean" minOccurs="0" maxOccurs="2147483647"/>
       <xs:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="2147483647"/>
     </xs:sequence>
+    <xs:attribute name="objectid" type="ST_ResourceID" use="required"/>
+    <xs:attribute name="transform" type="ST_Matrix3D"/>
+    <xs:attribute name="path" type="ST_Path"/>
     <xs:anyAttribute namespace="##other" processContents="lax"/>
   </xs:complexType>
 
@@ -231,22 +249,16 @@ See [the 3MF Core Specification glossary](https://github.com/3MFConsortium/spec_
             </mesh>
         </object>
         <object id="6" type="model" name="Intersected">
-            <components>
-                <component objectid="3" transform="0.0741111 0 0 0 0.0741111 0 0 0 0.0741111 2.91124 -0.400453 1.60607" />
-            </components>
-            <booleanoperations>
-                <boolean objectid="4" bo:operation="intersection" transform="0.0741111 0 0 0 0.0741111 0 0 0 0.0741111 2.91124 -0.400453 1.60607"/>
-            </booleanoperations>
+            <bo:booleanoperations objectid="3" transform="0.0741111 0 0 0 0.0741111 0 0 0 0.0741111 2.91124 -0.400453 1.60607">
+                <bo:boolean objectid="4" bo:operation="intersection" transform="0.0741111 0 0 0 0.0741111 0 0 0 0.0741111 2.91124 -0.400453 1.60607"/>
+            </bo:booleanoperations>
         </object>
         <object id="10" type="model" name="Full part">
-            <components>
-                <component objectid="6"/>
-            </components>
-            <booleanoperations>
-                <boolean objectid="5" bo:operation="difference" transform="0.0271726 0 0 0 0 0.0271726 0 -0.0680034 0 4.15442 3.58836 5.23705" />
-                <boolean objectid="5" bo:operation="difference" transform="0.0272014 0 0 0 0.0272012 0 0 0 0.0680035 4.05357 6.33412 3.71548" />
-                <boolean objectid="5" bo:operation="difference" transform="0 0 -0.0272013 0 0.0272013 0 0.0680032 0 0 5.05103 6.32914 3.35287" />
-            </booleanoperations>
+            <bo:booleanoperations objectid="6">
+                <bo:boolean objectid="5" bo:operation="difference" transform="0.0271726 0 0 0 0 0.0271726 0 -0.0680034 0 4.15442 3.58836 5.23705" />
+                <bo:boolean objectid="5" bo:operation="difference" transform="0.0272014 0 0 0 0.0272012 0 0 0 0.0680035 4.05357 6.33412 3.71548" />
+                <bo:boolean objectid="5" bo:operation="difference" transform="0 0 -0.0272013 0 0.0272013 0 0.0680032 0 0 5.05103 6.32914 3.35287" />
+            </bo:booleanoperations>
         </object>
     </resources>
     <build>
