@@ -68,11 +68,13 @@ See [the 3MF Core Specification software conformance](https://github.com/3MFCons
 
 The 3MF Core Specification defines the \<components> element in the \<object> resource as definition of a logical association of different objects to form an assembly, with the intent to allow reuse of model definitions for an efficient encoding. The resultant shape of a \<components> element is the aggregation (union) of each \<component> object element.
 
-This extension is based in a simplified Constructive Solid Geometry ([CSG](https://en.wikipedia.org/wiki/Constructive_solid_geometry)) by limiting the scope of the subtracting boolean operations: difference and intersect.
+This extension is based in a simplified Constructive Solid Geometry ([CSG](https://en.wikipedia.org/wiki/Constructive_solid_geometry)) by limiting the scope of the boolean operations described in the following diagram:
 
 ![CSG binary tree](images/Csg_tree.png)
 
-This document describes a new element \<booleanoperations> in the \<object> elements that specify options subtracting operations. This element is OPTIONAL for producers but MUST be supported by consumers that specify support for the 3MF Boolean Operations Extension.
+The boolean operations are restricted as the boolean operating objects to the base object MUST only reference mesh objects. While the base object to which apply the boolean operations MIGHT BE of any object type.
+
+This document describes a new element \<booleanoperations> in the \<object> elements that specifies a new object type, other than a mesh or components. This element is OPTIONAL for producers but MUST be supported by consumers that specify support for the 3MF Boolean Operations Extension.
 
 To avoid data loss while parsing, a 3MF package which uses referenced objects MUST enlist the 3MF Boolean Operations Extension as “required extension”, as defined in the core specification. However, if the 3MF Boolean Operations Extension is not enlisted a required, any consumer non-supporting the 3MF Boolean Operations Extension may be able to process the rest of the document.
 
@@ -89,6 +91,7 @@ Element \<booleanoperations>
 | Name   | Type   | Use   | Default   | Annotation |
 | --- | --- | --- | --- | --- |
 | objectid | **ST\_ResourceID** | required | | It references the object object id to apply the boolean operations |
+| operation | **ST\_Operation** | required | | Subtracting boolean operation |
 | transform | **ST\_Matrix3D** | | | A matrix transform (see [3.3. 3D Matrices](#33-3d-matrices)) applied to the item to be outputted. |
 | path | **ST\_Path** | | | A file path to the object file being referenced. The path is an absolute path from the root of the 3MF container. |
 | @anyAttribute | | | | |
@@ -96,6 +99,20 @@ Element \<booleanoperations>
 The optional \<booleanoperations> element contains one or more \<boolean> elements to perform subtractive boolean operations to the mesh or components elements in the enclosing object.
 
 **objectid** - Selects the object with the base object to be subtracted.
+
+**operation** - The subtracting boolean operation to perform. The options for the subtracting operations are the following:
+
+1.	*union*. The new object shape is defined as the merger of the shapes. The new object surface property is defined by the property of the surface property defining the outer surface. If material and the volumetric property, if available, in the overlapped volume is defined by the added object, as defined by [the 3MF Core Specification overlapping order](https://github.com/3MFConsortium/spec_core/blob/1.2.3/3MF%20Core%20Specification.md#412-overlapping-order)
+
+    union(base,a,b,c) = ((base Ս a) Ս b) Ս c = base Ս (a Ս b Ս c)
+
+2.  *difference*. The new object shape is defined by the shape in the first object shape that is not in any other object shape. The new object surface property, where overlaps, is defined by the object surface property of the subtracting object(s). While the volume properties are defined by the volume remaining from the base object.
+
+    difference(base,a,b,c) = ((base - a) - b) - c = base - (a Ս b Ս c)
+
+3.  *intersection*. The new object shape is defined as the common (clipping) shape in all objects. The new object surface property is defined as the object surface property of the object defining the new surface. While the volume properties are defined by the volume remaining from the base object.
+
+    intersection(base,a,b,c) = ((base Ո a) Ո b) Ո c = base Ո (a Ս b Ս c)
 
 **transform** - The transform to apply to the selected base object.
 
@@ -112,22 +129,13 @@ Element \<boolean>
 | Name   | Type   | Use   | Default   | Annotation |
 | --- | --- | --- | --- | --- |
 | objectid | **ST\_ResourceID** | required | | It references the mesh object id performing the boolean operation. |
-| operation | **ST\_Operation** | required | | Subtracting boolean operation |
 | transform | **ST\_Matrix3D** | | | A matrix transform (see [3.3. 3D Matrices](#33-3d-matrices)) applied to the item to be outputted. |
 | path | **ST\_Path** | | | A file path to the model file being referenced. The path is an absolute path from the root of the 3MF container. |
 | @anyAttribute | | | | |
 
-The \<boolean> element selects a pre-defined object resource to perform a boolean operation to the mesh or component tree in the enclosing object.
+The \<boolean> element selects a pre-defined object resource to perform a boolean operation to the base object referenced in the enclosing \<booleanoperations> element.
 
-**objectid** - Selects the object with the mesh to subtract. The object MUST be a triangle mesh object of type "model" (i.e. not a components object), and MUST NOT contain a Boolean Operation.
-
-**operation** - The subtracting boolean operation to perform. The options for the subtracting operations are the following:
-
-1.  *difference*. The new object shape is defined by the shape in the enclosing object shape that is not in the subtracting object shape. The new object surface property, where overlaps, is defined by the object surface property of the subtracting object(s).
-
-2.  *intersection*. The new object shape is defined as the common (clipping) shape in all objects. The new object surface property is defined as the object surface property of the object clipping that surface.
-
->**Note:** The "operation" attribute does not define a *union* operation, since it is implicit performed by the components tree, as defined by [the 3MF Core Specification Components](https://github.com/3MFConsortium/spec_core/blob/1.2.3/3MF%20Core%20Specification.md#42-components).
+**objectid** - Selects the object with the mesh to subtract. The object MUST be a mesh object of type "model" (i.e. not a components or another boolean operations object.
 
 **transform** - The transform to apply to the selected object before the boolean operation.
 
@@ -182,6 +190,7 @@ See [the 3MF Core Specification glossary](https://github.com/3MFConsortium/spec_
       <xs:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="2147483647"/>
     </xs:sequence>
     <xs:attribute name="objectid" type="ST_ResourceID" use="required"/>
+    <xs:attribute name="operation" type="ST_Operation" use="required"/>
     <xs:attribute name="transform" type="ST_Matrix3D"/>
     <xs:attribute name="path" type="ST_Path"/>
     <xs:anyAttribute namespace="##other" processContents="lax"/>
@@ -189,7 +198,6 @@ See [the 3MF Core Specification glossary](https://github.com/3MFConsortium/spec_
 
   <xs:complexType name="CT_Boolean">
     <xs:attribute name="objectid" type="ST_ResourceID" use="required"/>
-    <xs:attribute name="operation" type="ST_Operation" use="required"/>
     <xs:attribute name="transform" type="ST_Matrix3D"/>
     <xs:attribute name="path" type="ST_Path"/>
     <xs:anyAttribute namespace="##other" processContents="lax"/>
@@ -198,11 +206,29 @@ See [the 3MF Core Specification glossary](https://github.com/3MFConsortium/spec_
   <!-- Simple Types -->
   <xs:simpleType name="ST_Operation">
     <xs:restriction base="xs:string">
+      <xs:enumeration value="union"/>
       <xs:enumeration value="difference"/>
       <xs:enumeration value="intersection"/>
     </xs:restriction>
   </xs:simpleType>  
 
+  <xs:simpleType name="ST_Matrix3D">
+    <xs:restriction base="xs:string">
+      <xs:whiteSpace value="collapse"/>
+      <xs:pattern value="((\-|\+)?(([0-9]+(\.[0-9]+)?)|(\.[0-9]+))((e|E)(\-|\+)?[0-9]+)?) ((\-|\+)?(([0-9]+(\.[0-9]+)?)|(\.[0-9]+))((e|E)(\-|\+)?[0-9]+)?) ((\-|\+)?(([0-9]+(\.[0-9]+)?)|(\.[0-9]+))((e|E)(\-|\+)?[0-9]+)?) ((\-|\+)?(([0-9]+(\.[0-9]+)?)|(\.[0-9]+))((e|E)(\-|\+)?[0-9]+)?) ((\-|\+)?(([0-9]+(\.[0-9]+)?)|(\.[0-9]+))((e|E)(\-|\+)?[0-9]+)?) ((\-|\+)?(([0-9]+(\.[0-9]+)?)|(\.[0-9]+))((e|E)(\-|\+)?[0-9]+)?) ((\-|\+)?(([0-9]+(\.[0-9]+)?)|(\.[0-9]+))((e|E)(\-|\+)?[0-9]+)?) ((\-|\+)?(([0-9]+(\.[0-9]+)?)|(\.[0-9]+))((e|E)(\-|\+)?[0-9]+)?) ((\-|\+)?(([0-9]+(\.[0-9]+)?)|(\.[0-9]+))((e|E)(\-|\+)?[0-9]+)?) ((\-|\+)?(([0-9]+(\.[0-9]+)?)|(\.[0-9]+))((e|E)(\-|\+)?[0-9]+)?) ((\-|\+)?(([0-9]+(\.[0-9]+)?)|(\.[0-9]+))((e|E)(\-|\+)?[0-9]+)?) ((\-|\+)?(([0-9]+(\.[0-9]+)?)|(\.[0-9]+))((e|E)(\-|\+)?[0-9]+)?)"/>
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="ST_ResourceID">
+    <xs:restriction base="xs:positiveInteger">
+      <xs:maxExclusive value="2147483648"/>
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="ST_Path">
+    <xs:restriction base="xs:string"> </xs:restriction>
+  </xs:simpleType>
+  
   <!-- Elements -->
   <xs:element name="object" type="CT_Object"/>
   <xs:element name="booleanoperations" type="CT_BooleanOperations"/>
@@ -249,15 +275,15 @@ See [the 3MF Core Specification glossary](https://github.com/3MFConsortium/spec_
             </mesh>
         </object>
         <object id="6" type="model" name="Intersected">
-            <bo:booleanoperations objectid="3" transform="0.0741111 0 0 0 0.0741111 0 0 0 0.0741111 2.91124 -0.400453 1.60607">
-                <bo:boolean objectid="4" bo:operation="intersection" transform="0.0741111 0 0 0 0.0741111 0 0 0 0.0741111 2.91124 -0.400453 1.60607"/>
+            <bo:booleanoperations objectid="3" bo:operation="intersection" transform="0.0741111 0 0 0 0.0741111 0 0 0 0.0741111 2.91124 -0.400453 1.60607">
+                <bo:boolean objectid="4" transform="0.0741111 0 0 0 0.0741111 0 0 0 0.0741111 2.91124 -0.400453 1.60607"/>
             </bo:booleanoperations>
         </object>
         <object id="10" type="model" name="Full part">
-            <bo:booleanoperations objectid="6">
-                <bo:boolean objectid="5" bo:operation="difference" transform="0.0271726 0 0 0 0 0.0271726 0 -0.0680034 0 4.15442 3.58836 5.23705" />
-                <bo:boolean objectid="5" bo:operation="difference" transform="0.0272014 0 0 0 0.0272012 0 0 0 0.0680035 4.05357 6.33412 3.71548" />
-                <bo:boolean objectid="5" bo:operation="difference" transform="0 0 -0.0272013 0 0.0272013 0 0.0680032 0 0 5.05103 6.32914 3.35287" />
+            <bo:booleanoperations objectid="6" bo:operation="difference">
+                <bo:boolean objectid="5" transform="0.0271726 0 0 0 0 0.0271726 0 -0.0680034 0 4.15442 3.58836 5.23705" />
+                <bo:boolean objectid="5" transform="0.0272014 0 0 0 0.0272012 0 0 0 0.0680035 4.05357 6.33412 3.71548" />
+                <bo:boolean objectid="5" transform="0 0 -0.0272013 0 0.0272013 0 0.0680032 0 0 5.05103 6.32914 3.35287" />
             </bo:booleanoperations>
         </object>
     </resources>
