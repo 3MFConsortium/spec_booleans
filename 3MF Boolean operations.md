@@ -50,17 +50,17 @@ This extension MUST be used only with Core specification 1.x.
 
 ## Document Conventions
 
-See [the 3MF Core Specification conventions](https://github.com/3MFConsortium/spec_core/blob/1.2.3/3MF%20Core%20Specification.md#document-conventions).
+See [the 3MF Core Specification conventions](https://github.com/3MFConsortium/spec_core/blob/1.3.0/3MF%20Core%20Specification.md#document-conventions).
 
 In this extension specification, as an example, the prefix "o" maps to the xml-namespace "http://schemas.microsoft.com/3dmanufacturing/booleanoperations/2022/06". See [Appendix C. Standard Namespace](#appendix-c-standard-namespace).
 
 ## Language Notes
 
-See [the 3MF Core Specification language notes](https://github.com/3MFConsortium/spec_core/blob/1.2.3/3MF%20Core%20Specification.md#language-notes).
+See [the 3MF Core Specification language notes](https://github.com/3MFConsortium/spec_core/blob/1.3.0/3MF%20Core%20Specification.md#language-notes).
 
 ## Software Conformance
 
-See [the 3MF Core Specification software conformance](https://github.com/3MFConsortium/spec_core/blob/1.2.3/3MF%20Core%20Specification.md#software-conformance).
+See [the 3MF Core Specification software conformance](https://github.com/3MFConsortium/spec_core/blob/1.3.0/3MF%20Core%20Specification.md#software-conformance).
 
 # Part I: 3MF Documents
 
@@ -151,7 +151,7 @@ The boolean operations follow the fill rule conversion defined by [the 3MF Core 
 
 ## Appendix A. Glossary
 
-See [the 3MF Core Specification glossary](https://github.com/3MFConsortium/spec_core/blob/1.2.3/3MF%20Core%20Specification.md#appendix-a-glossary).
+See [the 3MF Core Specification glossary](https://github.com/3MFConsortium/spec_core/blob/1.3.0/3MF%20Core%20Specification.md#appendix-a-glossary).
 
 ## Appendix B. 3MF XSD Schema
 
@@ -301,4 +301,4 @@ From Wikipedia, the free encyclopedia. "Constructive solid geometry". https://en
 
 Cornelia Haslinger, Universität Salzburg. "Constructive Solid Geometry in Education". https://www.uni-salzburg.at/fileadmin/multimedia/Mathematik/images/EMMA/Workshop_Turkey/education_days/CSG_Haslinger_low_quality.pdf.
 
-See the [3MF Core Specification references](https://github.com/3MFConsortium/spec_core/blob/1.2.3/3MF%20Core%20Specification.md#references) for additional references.
+See the [3MF Core Specification references](https://github.com/3MFConsortium/spec_core/blob/1.3.0/3MF%20Core%20Specification.md#references) for additional references.
