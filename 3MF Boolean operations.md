@@ -13,7 +13,7 @@
 
 
 
-| **Version** | 0.7.5 |
+| **Version** | 0.7.6 |
 | --- | --- |
 | **Status** | Draft |
 
@@ -26,7 +26,8 @@
   * [Software Conformance](#software-conformance)
 - [Part I: 3MF Documents](#part-i-3mf-documents)
   * [Chapter 1. Overview of Additions](#chapter-1-overview-of-additions)
-  * [Chapter 2. Boolean Operations](#chapter-2-boolean-operations)
+  * [Chapter 2. Object Resources](#chapter-2-object-resources)
+    + [2.1. Boolean Operations](#21-boolean-operations)
 - [Part II. Appendices](#part-ii-appendices)
   * [Appendix A. Glossary](#appendix-a-glossary)
   * [Appendix B. 3MF XSD Schema](#appendix-b-3mf-xsd-schema)
@@ -82,11 +83,19 @@ To avoid data loss while parsing, a 3MF package which uses referenced objects MU
 
 ![OPC organization](images/1.1.xsd_overview.png)
 
-# Chapter 2. Boolean Operations
+# Chapter 2. Object Resources
+
+Element \<object>
+
+![Object](images/2.object.png)
+
+The \<object> element is enhanced with an additional element \<booleanoperations> in the object choice, declaring that the object represents "boolean operations" instead of a mesh or a component, extending [the 3MF Core Specification object resources](https://github.com/3MFConsortium/spec_core/blob/1.2.3/3MF%20Core%20Specification.md#chapter-4-object-resources)
+
+## 2.1. Boolean Operations
 
 Element \<booleanoperations>
 
-![Boolean Operations](images/2.booleanoperations.png)
+![Boolean Operations](images/2.1.booleanoperations.png)
 
 | Name   | Type   | Use   | Default   | Annotation |
 | --- | --- | --- | --- | --- |
@@ -120,11 +129,11 @@ The optional \<booleanoperations> element contains one or more \<boolean> elemen
 
 The boolean operations are sequentially applied in the order defined by the \<boolean> sequence.
 
-## 2.1. Boolean
+### 2.1.1. Boolean
 
 Element \<boolean>
 
-![Boolean](images/2.1.boolean.png)
+![Boolean](images/2.1.1.boolean.png)
 
 | Name   | Type   | Use   | Default   | Annotation |
 | --- | --- | --- | --- | --- |
@@ -179,8 +188,8 @@ See [the 3MF Core Specification glossary](https://github.com/3MFConsortium/spec_
     <xs:sequence>
       <xs:choice>
         <xs:element ref="booleanoperations"/>
-        <xs:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="2147483647"/>
       </xs:choice>
+      <xs:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="2147483647"/>
     </xs:sequence>
   </xs:complexType>
 
