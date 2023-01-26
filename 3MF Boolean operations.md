@@ -188,8 +188,8 @@ See [the 3MF Core Specification glossary](https://github.com/3MFConsortium/spec_
     <xs:sequence>
       <xs:choice>
         <xs:element ref="booleanoperations"/>
+        <xs:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="2147483647"/>
       </xs:choice>
-      <xs:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="2147483647"/>
     </xs:sequence>
   </xs:complexType>
 
