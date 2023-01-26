@@ -113,16 +113,16 @@ The optional \<booleanoperations> element contains one or more \<boolean> elemen
 
 1.	*union*. The new object shape is defined as the merger of the shapes. The new object surface property is defined by the property of the surface property defining the outer surface. If material and the volumetric property, if available, in the overlapped volume is defined by the added object, as defined by [the 3MF Core Specification overlapping order](https://github.com/3MFConsortium/spec_core/blob/1.2.3/3MF%20Core%20Specification.md#412-overlapping-order)
 
-    union(base,a,b,c) = ((base Ս a) Ս b) Ս c = base Ս (a Ս b Ս c)
+    union(base,a,b,c) = base Ս (a Ս b Ս c) = ((base Ս a) Ս b) Ս c
 
 2.  *difference*. The new object shape is defined by the shape in the first object shape that is not in any other object shape. The new object surface property, where overlaps, is defined by the object surface property of the subtracting object(s). While the volume properties are defined by the volume remaining from the base object.
 
-    difference(base,a,b,c) = ((base - a) - b) - c = base - (a Ս b Ս c)
+    difference(base,a,b,c) = base - (a Ս b Ս c) = ((base - a) - b) - c = base - (a Ս b Ս c)
 
 3.  *intersection*. The new object shape is defined as the common (clipping) shape in all objects. The new object surface property is defined as the object surface property of the object defining the new surface. While the volume properties are defined by the volume remaining from the base object.
 
-    intersection(base,a,b,c) = ((base Ո a) Ո b) Ո c = base Ո (a Ս b Ս c)
-
+    intersection(base,a,b,c) = base Ո (a Ս b Ս c) = ((base Ո a) Ո b) Ո c
+    
 **transform** - The transform to apply to the selected base object.
 
 **path** - When used in conjunction with [the 3MF Production extension](https://github.com/3MFConsortium/spec_production/blob/master/3MF%20Production%20Extension.md), the "path" attribute references objects in non-root model files. Path is an absolute path to the target model file inside the 3MF container that contains the target object. The use of the path attribute in a \<boolean> element is ONLY valid in the root model file.
