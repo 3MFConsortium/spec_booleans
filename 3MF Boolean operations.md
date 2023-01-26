@@ -107,7 +107,7 @@ Element \<booleanoperations>
 
 The optional \<booleanoperations> element contains one or more \<boolean> elements to perform subtractive boolean operations to the referenced object.
 
-**objectid** - Selects the object with the base object to apply the boolean operations.
+**objectid** - Selects the base object to apply the boolean operations.
 
 **operation** - The subtracting boolean operation to perform. The options for the boolean operations are the following:
 
@@ -144,7 +144,7 @@ Element \<boolean>
 
 The \<boolean> element selects a pre-defined object resource to perform a boolean operation to the base object referenced in the enclosing \<booleanoperations> element.
 
-**objectid** - Selects the object with the mesh to subtract. The object MUST be a mesh object of type "model" (i.e. not a components or another boolean operations object).
+**objectid** - Selects the object with the mesh to apply the boolean operation. The object MUST be a mesh object of type "model" (i.e. not a components or another boolean operations object).
 
 **transform** - The transform to apply to the selected object before the boolean operation.
 
