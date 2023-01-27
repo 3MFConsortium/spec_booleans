@@ -308,6 +308,4 @@ See [the 3MF Core Specification glossary](https://github.com/3MFConsortium/spec_
 
 From Wikipedia, the free encyclopedia. "Constructive solid geometry". https://en.wikipedia.org/wiki/Constructive_solid_geometry
 
-Cornelia Haslinger, Universität Salzburg. "Constructive Solid Geometry in Education". https://www.uni-salzburg.at/fileadmin/multimedia/Mathematik/images/EMMA/Workshop_Turkey/education_days/CSG_Haslinger_low_quality.pdf.
-
 See the [3MF Core Specification references](https://github.com/3MFConsortium/spec_core/blob/1.3.0/3MF%20Core%20Specification.md#references) for additional references.
