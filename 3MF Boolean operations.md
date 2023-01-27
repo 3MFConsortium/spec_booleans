@@ -117,7 +117,7 @@ The optional \<booleanoperations> element contains one or more \<boolean> elemen
 
 2.  *difference*. The new object shape is defined by the shape in the first object shape that is not in any other object shape. The new object surface property, where overlaps, is defined by the object surface property of the subtracting object(s). While the volume properties are defined by the volume remaining from the base object.
 
-    difference(base,a,b,c) = base - (a Ս b Ս c) = ((base - a) - b) - c = base - (a Ս b Ս c)
+    difference(base,a,b,c) = base - (a Ս b Ս c) = ((base - a) - b) - c
 
 3.  *intersection*. The new object shape is defined as the common (clipping) shape in all objects. The new object surface property is defined as the object surface property of the object defining the new surface. While the volume properties are defined by the volume remaining from the base object.
 
