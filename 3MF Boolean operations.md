@@ -304,8 +304,6 @@ See [the 3MF Core Specification glossary](https://github.com/3MFConsortium/spec_
 
 # References
 
-**CSG**
-
-From Wikipedia, the free encyclopedia. "Constructive solid geometry". https://en.wikipedia.org/wiki/Constructive_solid_geometry
+**CSG** Wikipedia, the free encyclopedia: [Constructive solid geometry](https://en.wikipedia.org/wiki/Constructive_solid_geometry)
 
 See the [3MF Core Specification references](https://github.com/3MFConsortium/spec_core/blob/1.3.0/3MF%20Core%20Specification.md#references) for additional references.
