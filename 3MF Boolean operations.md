@@ -13,7 +13,7 @@
 
 
 
-| **Version** | 0.7.7 |
+| **Version** | 0.7.8 |
 | --- | --- |
 | **Status** | Draft |
 
@@ -53,7 +53,7 @@ This extension MUST be used only with Core specification 1.x.
 
 See [the 3MF Core Specification conventions](https://github.com/3MFConsortium/spec_core/blob/1.3.0/3MF%20Core%20Specification.md#document-conventions).
 
-In this extension specification, as an example, the prefix "o" maps to the xml-namespace "http://schemas.microsoft.com/3dmanufacturing/booleanoperations/2022/06". See [Appendix C. Standard Namespace](#appendix-c-standard-namespace).
+In this extension specification, as an example, the prefix "bo" maps to the xml-namespace "http://schemas.microsoft.com/3dmanufacturing/booleanoperations/2022/06". See [Appendix C. Standard Namespace](#appendix-c-standard-namespace).
 
 ## Language Notes
 
@@ -75,7 +75,7 @@ This extension is based in a simplified Constructive Solid Geometry ([CSG](https
 
 The boolean operations are restricted as the boolean operating objects to the base object MUST only reference mesh objects. While the base object to which apply the boolean operations MIGHT BE of any object type.
 
-This document describes a new element \<booleans> in the \<object> elements that specifies a new object type, other than a mesh or components. This element is OPTIONAL for producers but MUST be supported by consumers that specify support for the 3MF Boolean Operations Extension.
+This document describes a new element \<booleans> in the \<object> elements that specifies a new object type, other than mesh or components. This element is OPTIONAL for producers but MUST be supported by consumers that specify support for the 3MF Boolean Operations Extension.
 
 To avoid data loss while parsing, a 3MF package which uses referenced objects MUST enlist the 3MF Boolean Operations Extension as “required extension”, as defined in the core specification. However, if the 3MF Boolean Operations Extension is not enlisted a required, any consumer non-supporting the 3MF Boolean Operations Extension may be able to process the rest of the document.
 
@@ -89,7 +89,7 @@ Element \<object>
 
 ![Object](images/2.object.png)
 
-The \<object> element is enhanced with an additional element \<booleans> in the object choice, declaring that the object represents "boolean operations" instead of a mesh or a component, extending [the 3MF Core Specification object resources](https://github.com/3MFConsortium/spec_core/blob/1.2.3/3MF%20Core%20Specification.md#chapter-4-object-resources)
+The \<object> element is enhanced with an additional element \<booleans> in the object choice, declaring that the object represents a "boolean operation" instead of mesh or components, extending [the 3MF Core Specification object resources](https://github.com/3MFConsortium/spec_core/blob/1.2.3/3MF%20Core%20Specification.md#chapter-4-object-resources)
 
 ## 2.1. Booleans
 
@@ -99,27 +99,27 @@ Element \<booleans>
 
 | Name   | Type   | Use   | Default   | Annotation |
 | --- | --- | --- | --- | --- |
-| objectid | **ST\_ResourceID** | required | | It references the object object id to apply the boolean operations |
-| operation | **ST\_Operation** | required | | Subtracting boolean operation |
+| objectid | **ST\_ResourceID** | required | | It references the object id to apply the boolean operation |
+| operation | **ST\_Operation** | required | | The boolean operation |
 | transform | **ST\_Matrix3D** | | | A matrix transform (see [3.3. 3D Matrices](#33-3d-matrices)) applied to the item to be outputted. |
 | path | **ST\_Path** | | | A file path to the object file being referenced. The path is an absolute path from the root of the 3MF container. |
 | @anyAttribute | | | | |
 
-The optional \<booleans> element contains one or more \<boolean> elements to perform subtractive boolean operations to the referenced object.
+The optional \<booleans> element contains one or more \<boolean> elements to perform the boolean operation to the referenced object.
 
-**objectid** - Selects the base object to apply the boolean operations.
+**objectid** - Selects the base object to apply the boolean operation.
 
-**operation** - The subtracting boolean operation to perform. The options for the boolean operations are the following:
+**operation** - The boolean operation to perform. The options for the boolean operations are the following:
 
-1.	*union*. The new object shape is defined as the merger of the shapes. The new object surface property is defined by the property of the surface property defining the outer surface. If material and the volumetric property, if available, in the overlapped volume is defined by the added object, as defined by [the 3MF Core Specification overlapping order](https://github.com/3MFConsortium/spec_core/blob/1.2.3/3MF%20Core%20Specification.md#412-overlapping-order)
+1.	*union*. The resulting object shape is defined as the merger of the shapes. The resulting object surface property is defined by the property of the surface property defining the outer surface. If material and the volumetric property, if available, in the overlapped volume is defined by the added object, as defined by [the 3MF Core Specification overlapping order](https://github.com/3MFConsortium/spec_core/blob/1.2.3/3MF%20Core%20Specification.md#412-overlapping-order)
 
     union(base,a,b,c) = base Ս (a Ս b Ս c) = ((base Ս a) Ս b) Ս c
 
-2.  *difference*. The new object shape is defined by the shape in the first object shape that is not in any other object shape. The new object surface property, where overlaps, is defined by the object surface property of the subtracting object(s), or no-property is the subtracting object has no property defined in that surface. While the volume properties are defined by the volume remaining from the base object.
+2.  *difference*. The resulting object shape is defined by the shape in the first object shape that is not in any other object shape. The resulting object surface property, where overlaps, is defined by the object surface property of the subtracting object(s), or no-property is the subtracting object has no property defined in that surface. While the volume properties are defined by the volume remaining from the base object.
 
     difference(base,a,b,c) = base - (a Ս b Ս c) = ((base - a) - b) - c
 
-3.  *intersection*. The new object shape is defined as the common (clipping) shape in all objects. The new object surface property is defined as the object surface property of the object defining the new surface, or no-property is the subtracting object has no property defined in that surface. While the volume properties are defined by the volume remaining from the base object.
+3.  *intersection*. The resulting object shape is defined as the common (clipping) shape in all objects. The resulting object surface property is defined as the object surface property of the object defining the new surface, or no-property is the subtracting object has no property defined in that surface. While the volume properties are defined by the volume remaining from the base object.
 
     intersection(base,a,b,c) = base Ո (a Ս b Ս c) = ((base Ո a) Ո b) Ո c
 
@@ -131,7 +131,7 @@ The following diagrams, from the ***CSG*** Wikipedia, show the three operations:
 
 | ![operation = union](images/Boolean_union.png) | ![operation = difference](images/Boolean_difference.png) | ![operation = intersection](images/Boolean_intersect.png) |
 | :---: | :---: | :---: |
-| **union**: components of objects | **difference**: subtraction of object from another one | **intersection**: portion common to objects |
+| **union**: Merger of two objects into one | **difference**: Subtraction of object from another one | **intersection**: Portion common to objects |
 
 ### 2.1.1. Boolean
 
@@ -148,7 +148,7 @@ Element \<boolean>
 
 The \<boolean> element selects a pre-defined object resource to perform a boolean operation to the base object referenced in the enclosing \<booleans> element.
 
-**objectid** - Selects the object with the mesh to apply the boolean operation. The object MUST be a mesh object of type "model" (i.e. not a components or another boolean operations object).
+**objectid** - Selects the object with the mesh to apply the boolean operation. The object MUST be a mesh object of type "model" (i.e. not a components or another booleans object).
 
 **transform** - The transform to apply to the selected object before the boolean operation.
 
@@ -284,12 +284,12 @@ See [the 3MF Core Specification glossary](https://github.com/3MFConsortium/spec_
             </mesh>
         </object>
         <object id="6" type="model" name="Intersected">
-            <bo:booleans objectid="3" bo:operation="intersection" transform="0.0741111 0 0 0 0.0741111 0 0 0 0.0741111 2.91124 -0.400453 1.60607">
+            <bo:booleans objectid="3" operation="intersection" transform="0.0741111 0 0 0 0.0741111 0 0 0 0.0741111 2.91124 -0.400453 1.60607">
                 <bo:boolean objectid="4" transform="0.0741111 0 0 0 0.0741111 0 0 0 0.0741111 2.91124 -0.400453 1.60607"/>
             </bo:booleans>
         </object>
         <object id="10" type="model" name="Full part">
-            <bo:booleans objectid="6" bo:operation="difference">
+            <bo:booleans objectid="6" operation="difference">
                 <bo:boolean objectid="5" transform="0.0271726 0 0 0 0 0.0271726 0 -0.0680034 0 4.15442 3.58836 5.23705" />
                 <bo:boolean objectid="5" transform="0.0272014 0 0 0 0.0272012 0 0 0 0.0680035 4.05357 6.33412 3.71548" />
                 <bo:boolean objectid="5" transform="0 0 -0.0272013 0 0.0272013 0 0.0680032 0 0 5.05103 6.32914 3.35287" />
