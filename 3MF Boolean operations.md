@@ -99,10 +99,10 @@ Element \<booleans>
 
 | Name   | Type   | Use   | Default   | Annotation |
 | --- | --- | --- | --- | --- |
-| objectid | **ST\_ResourceID** | required | | It references the object id to apply the boolean operation |
+| objectid | **ST\_ResourceID** | required | | It references the base object id to apply the boolean operation |
 | operation | **ST\_Operation** | required | | The boolean operation |
 | transform | **ST\_Matrix3D** | | | A matrix transform (see [3.3. 3D Matrices](#33-3d-matrices)) applied to the item to be outputted. |
-| path | **ST\_Path** | | | A file path to the object file being referenced. The path is an absolute path from the root of the 3MF container. |
+| path | **ST\_Path** | | | A file path to the base object file being referenced. The path is an absolute path from the root of the 3MF container. |
 | @anyAttribute | | | | |
 
 The optional \<booleans> element contains one or more \<boolean> elements to perform the boolean operation to the referenced object.
