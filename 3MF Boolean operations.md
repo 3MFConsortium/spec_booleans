@@ -195,7 +195,7 @@ See [the 3MF Core Specification glossary](https://github.com/3MFConsortium/spec_
 
   <xs:complexType name="CT_Booleans">
     <xs:sequence>
-      <xs:element ref="boolean" minOccurs="0" maxOccurs="2147483647"/>
+      <xs:element ref="boolean" maxOccurs="2147483647"/>
       <xs:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="2147483647"/>
     </xs:sequence>
     <xs:attribute name="objectid" type="ST_ResourceID" use="required"/>
