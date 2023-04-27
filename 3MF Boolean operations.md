@@ -13,7 +13,7 @@
 
 
 
-| **Version** | 0.7.8 |
+| **Version** | 0.7.9 |
 | --- | --- |
 | **Status** | Draft |
 
@@ -77,7 +77,7 @@ The boolean operations are restricted as the boolean operating objects to the ba
 
 This document describes a new element \<booleans> in the \<object> elements that specifies a new object type, other than mesh or components. This element is OPTIONAL for producers but MUST be supported by consumers that specify support for the 3MF Boolean Operations Extension.
 
-To avoid data loss while parsing, a 3MF package which uses referenced objects MUST enlist the 3MF Boolean Operations Extension as “required extension”, as defined in the core specification. However, if the 3MF Boolean Operations Extension is not enlisted a required, any consumer non-supporting the 3MF Boolean Operations Extension may be able to process the rest of the document.
+This is a non-backwards compatible change since it declares a different type of object. Therefore, a 3MF package which uses "booleans" objects MUST enlist the 3MF Boolean Operations Extension as “required extension”, as defined in the core specification.
 
 ##### Figure 1-1: Overview of 3MF Boolean Operations Extension XML structure
 
