@@ -13,7 +13,7 @@
 
 
 
-| **Version** | 0.7.9 |
+| **Version** | 0.7.10 |
 | --- | --- |
 | **Status** | Draft |
 
@@ -69,13 +69,19 @@ See [the 3MF Core Specification software conformance](https://github.com/3MFCons
 
 The 3MF Core Specification defines the \<components> element in the \<object> resource as definition of a tree of different objects to form an assembly, with the intent to allow the reuse of model definitions for an efficient encoding. The resultant shape of a \<components> element is the aggregation of each \<component> object element.
 
-This extension is based in a simplified Constructive Solid Geometry ([CSG](https://en.wikipedia.org/wiki/Constructive_solid_geometry)) by limiting the scope of the boolean operations described in the following diagram:
+This extension is based in a simplified Constructive Solid Geometry ([CSG](https://en.wikipedia.org/wiki/Constructive_solid_geometry)) described in the following diagram, by limiting the scope of the boolean operations:
 
 ![CSG binary tree](images/Csg_tree.png)
 
-The boolean operations are restricted as the boolean operating objects to the base object MUST only reference mesh objects. While the base object to which apply the boolean operations MIGHT BE of any object type.
-
 This document describes a new element \<booleans> in the \<object> elements that specifies a new object type, other than mesh or components. This element is OPTIONAL for producers but MUST be supported by consumers that specify support for the 3MF Boolean Operations Extension.
+
+The \<booleans> element defines a new object type conforming a non-binary tree of boolean operations, with the following restrictions:
+
++ The base object (left operand) to which apply the boolean operations MUST BE of types mesh or booleans.
+
++ The merging objects (right operands) of a boolean operation MUST BE of type mesh.
+
++ Objects of type components MIGHT reference objects of type booleans but MUST NOT be referenced by them.
 
 This is a non-backwards compatible change since it declares a different type of object. Therefore, a 3MF package which uses "booleans" objects MUST enlist the 3MF Boolean Operations Extension as “required extension”, as defined in the core specification.
 
@@ -99,15 +105,15 @@ Element \<booleans>
 
 | Name   | Type   | Use   | Default   | Annotation |
 | --- | --- | --- | --- | --- |
-| objectid | **ST\_ResourceID** | required | | It references the base object id to apply the boolean operation |
-| operation | **ST\_Operation** | required | | The boolean operation |
+| objectid | **ST\_ResourceID** | required | | It references the base object id to apply the boolean operation. |
+| operation | **ST\_Operation** | | union | The boolean operation: union, difference and intersection. |
 | transform | **ST\_Matrix3D** | | | A matrix transform (see [3.3. 3D Matrices](#33-3d-matrices)) applied to the item to be outputted. |
 | path | **ST\_Path** | | | A file path to the base object file being referenced. The path is an absolute path from the root of the 3MF container. |
 | @anyAttribute | | | | |
 
 The optional \<booleans> element contains one or more \<boolean> elements to perform the boolean operation to the referenced object.
 
-**objectid** - Selects the base object to apply the boolean operation.
+**objectid** - Selects the base object to apply the boolean operation. The object MUST be a mesh or another booleans object of type "model" (i.e. not a components object). 
 
 **operation** - The boolean operation to perform. The options for the boolean operations are the following:
 
@@ -199,7 +205,7 @@ See [the 3MF Core Specification glossary](https://github.com/3MFConsortium/spec_
       <xs:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="2147483647"/>
     </xs:sequence>
     <xs:attribute name="objectid" type="ST_ResourceID" use="required"/>
-    <xs:attribute name="operation" type="ST_Operation" use="required"/>
+    <xs:attribute name="operation" type="ST_Operation" default="union"/>
     <xs:attribute name="transform" type="ST_Matrix3D"/>
     <xs:attribute name="path" type="ST_Path"/>
     <xs:anyAttribute namespace="##other" processContents="lax"/>
