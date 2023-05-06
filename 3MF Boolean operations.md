@@ -13,7 +13,7 @@
 
 
 
-| **Version** | 0.7.10 |
+| **Version** | 0.7.11 |
 | --- | --- |
 | **Status** | Draft |
 
@@ -75,13 +75,7 @@ This extension is based in a simplified Constructive Solid Geometry ([CSG](https
 
 This document describes a new element \<booleans> in the \<object> elements that specifies a new object type, other than mesh or components. This element is OPTIONAL for producers but MUST be supported by consumers that specify support for the 3MF Boolean Operations Extension.
 
-The \<booleans> element defines a new object type conforming a non-binary tree of boolean operations, with the following restrictions:
-
-+ The base object (left operand) to which apply the boolean operations MUST BE of types mesh or booleans.
-
-+ The merging objects (right operands) of a boolean operation MUST BE of type mesh.
-
-+ Objects of type components MIGHT reference objects of type booleans but MUST NOT be referenced by them.
+The \<booleans> element defines a new object type conforming a non-binary tree of boolean operations to referenced mesh or other booleans objects.
 
 This is a non-backwards compatible change since it declares a different type of object. Therefore, a 3MF package which uses "booleans" objects MUST enlist the 3MF Boolean Operations Extension as “required extension”, as defined in the core specification.
 
@@ -113,7 +107,7 @@ Element \<booleans>
 
 The optional \<booleans> element contains one or more \<boolean> elements to perform the boolean operation to the referenced object.
 
-**objectid** - Selects the base object to apply the boolean operation. The object MUST be a mesh or another booleans object of type "model" (i.e. not a components object). 
+**objectid** - Selects the base object to apply the boolean operation. The object MUST be a mesh or another booleans object of type "model". It MUST NOT reference a components object.
 
 **operation** - The boolean operation to perform. The options for the boolean operations are the following:
 
@@ -154,7 +148,7 @@ Element \<boolean>
 
 The \<boolean> element selects a pre-defined object resource to perform a boolean operation to the base object referenced in the enclosing \<booleans> element.
 
-**objectid** - Selects the object with the mesh to apply the boolean operation. The object MUST be a mesh object of type "model" (i.e. not a components or another booleans object).
+**objectid** - Selects the object with the mesh to apply the boolean operation. The object MUST be a mesh or another booleans object of type "model". It MUST NOT reference a components object.
 
 **transform** - The transform to apply to the selected object before the boolean operation.
 
