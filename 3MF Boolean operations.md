@@ -115,7 +115,7 @@ The optional \<booleans> element contains one or more \<boolean> elements to per
 
     union(base,a,b,c) = base Ս (a Ս b Ս c) = ((base Ս a) Ս b) Ս c
 
-2.  *difference*. The resulting object shape is defined by the shape in the first object shape that is not in any other object shape. The resulting object surface property, where overlaps, is defined by the object surface property of the subtracting object(s), or no-property is the subtracting object has no property defined in that surface. While the volume properties are defined by the volume remaining from the base object.
+2.  *difference*. The resulting object shape is defined by the shape in the base object shape that is not in any other object shape. The resulting object surface property, where overlaps, is defined by the object surface property of the subtracting object(s), or no-property is the subtracting object has no property defined in that surface. While the volume properties are defined by the volume remaining from the base object.
 
     difference(base,a,b,c) = base - (a Ս b Ս c) = ((base - a) - b) - c
 
@@ -132,6 +132,10 @@ The following diagrams, from the ***CSG*** Wikipedia, show the three operations:
 | ![operation = union](images/Boolean_union.png) | ![operation = difference](images/Boolean_difference.png) | ![operation = intersection](images/Boolean_intersect.png) |
 | :---: | :---: | :---: |
 | **union**: Merger of two objects into one | **difference**: Subtraction of object from another one | **intersection**: Portion common to objects |
+
+[TBD] The subtracting (difference or intersection) objects MUST **only** contain references to meshes or a booleans tree containing surfaces defined by triangle meshes. They MUST NOT contain surfaces defined by any other 3MF extension.
+
+Similarly as defined in [the 3MF Core Specification object resources](https://github.com/3MFConsortium/spec_core/blob/1.2.3/3MF%20Core%20Specification.md#chapter-4-object-resources), consumers MUST ignore the object type of objects containing a \<boolean> element, since the type is always overridden by descendant objects. Producers MUST NOT assign pid or pindex attributes to objects that contain booleans. This ensures that an object with no material will not be split into two representations with different materials due to being referenced as a boolean in multiple objects.
 
 ### 2.1.1. Boolean
 
