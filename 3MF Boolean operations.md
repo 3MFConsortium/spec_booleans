@@ -93,7 +93,7 @@ Element \<mesh>
 
 The \<mesh> element, defined in [the 3MF Core Specification meshes](https://github.com/3MFConsortium/spec_core/blob/1.2.3/3MF%20Core%20Specification.md#41-meshes), is enhanced with an optional \<booleans> element, declaring that the shape of the object is exclusively defined by a "boolean operation" instead of a triangle mesh or other ways of specifying a shape as defined in other 3MF extensions. 
 
->**Note**: this requires that the \<vertices> and the \<triangle> elements are empty, overriding the core spec definition.
+>**Note:** this requires that the \<vertices> and the \<triangle> elements are empty, overriding the core spec definition.
 
 ## 2.1. Booleans
 
@@ -137,7 +137,7 @@ The following diagrams, from the ***CSG*** Wikipedia, show the three operations:
 | :---: | :---: | :---: |
 | **union**: Merger of two objects into one | **difference**: Subtraction of object from another one | **intersection**: Portion common to objects |
 
->**Note**: The subtracting (difference or intersection) objects MUST **only** contain references to meshes containing surfaces defined by triangle meshes. They MUST NOT contain surfaces defined by any other 3MF extension.
+>**Note:** The subtracting (difference or intersection) objects MUST **only** contain references to meshes containing surfaces defined by triangle meshes. They MUST NOT contain surfaces defined by any other 3MF extension.
 
 Similarly as defined in [the 3MF Core Specification object resources](https://github.com/3MFConsortium/spec_core/blob/1.2.3/3MF%20Core%20Specification.md#chapter-4-object-resources), consumers MUST ignore the object type of objects containing a \<boolean> element, since the type is always overridden by descendant objects. Producers MUST NOT assign pid or pindex attributes to objects that contain booleans. This ensures that an object with no material will not be split into two representations with different materials due to being referenced as a boolean in multiple objects.
 
