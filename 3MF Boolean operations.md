@@ -13,7 +13,7 @@
 
 
 
-| **Version** | 0.7.11 |
+| **Version** | 0.8.0 |
 | --- | --- |
 | **Status** | Draft |
 
@@ -26,7 +26,7 @@
   * [Software Conformance](#software-conformance)
 - [Part I: 3MF Documents](#part-i-3mf-documents)
   * [Chapter 1. Overview of Additions](#chapter-1-overview-of-additions)
-  * [Chapter 2. Object Resources](#chapter-2-object-resources)
+  * [Chapter 2. Booleans mesh](#chapter-2-booleans-mesh)
     + [2.1. Booleans](#21-booleans)
 - [Part II. Appendices](#part-ii-appendices)
   * [Appendix A. Glossary](#appendix-a-glossary)
@@ -67,29 +67,33 @@ See [the 3MF Core Specification software conformance](https://github.com/3MFCons
 
 # Chapter 1. Overview of Additions
 
-The 3MF Core Specification defines the \<components> element in the \<object> resource as definition of a tree of different objects to form an assembly, with the intent to allow the reuse of model definitions for an efficient encoding. The resultant shape of a \<components> element is the aggregation of each \<component> object element.
+The 3MF Core Specification defines the \<components> element in the \<object> resource as definition of a tree of different objects to form an assembly, with the intent to allow the reuse of model definitions for an efficient encoding. The resultant shape of a \<components> element is the aggregation :of each \<component> object element.
 
-This extension is based in a simplified Constructive Solid Geometry ([CSG](https://en.wikipedia.org/wiki/Constructive_solid_geometry)) described in the following diagram, by limiting the scope of the boolean operations:
+This extension is based in a simplified Constructive Solid Geometry ([CSG](https://en.wikipedia.org/wiki/Constructive_solid_geometry)).
 
-![CSG binary tree](images/Csg_tree.png)
+However, to limit complexity in the consumer, this spec reduces the scope to a sequence of boolean operations.
 
-This document describes a new element \<booleans> in the \<object> elements that specifies a new object type, other than mesh or components. This element is OPTIONAL for producers but MUST be supported by consumers that specify support for the 3MF Boolean Operations Extension.
+![CSG binary sequence](images/Csg_sequence.png)
 
-The \<booleans> element defines a new object type conforming a non-binary tree of boolean operations to referenced mesh or other booleans objects.
+This document describes a new element \<booleans> in the \<mesh> elements that specifies a new mesh type, other than triangle mesh. This element is OPTIONAL for producers but MUST be supported by consumers that specify support for the 3MF Boolean Operations Extension.
 
-This is a non-backwards compatible change since it declares a different type of object. Therefore, a 3MF package which uses "booleans" objects MUST enlist the 3MF Boolean Operations Extension as “required extension”, as defined in the core specification.
+The \<booleans> element defines a new mesh type conforming a sequence of boolean operations to referenced meshes.
+
+This is a non-backwards compatible change since it declares a different content of the mesh element, with empty vertices and triangles. Therefore, a 3MF package which uses "booleans" meshes MUST enlist the 3MF Boolean Operations Extension as “required extension”, as defined in the core specification.
 
 ##### Figure 1-1: Overview of 3MF Boolean Operations Extension XML structure
 
 ![OPC organization](images/1.1.xsd_overview.png)
 
-# Chapter 2. Object Resources
+# Chapter 2. Booleans mesh
 
-Element \<object>
+Element \<mesh>
 
-![Object](images/2.object.png)
+![Mesh](images/2.mesh.png)
 
-The \<object> element is enhanced with an additional element \<booleans> in the object choice, declaring that the object represents a "boolean operation" instead of mesh or components, extending [the 3MF Core Specification object resources](https://github.com/3MFConsortium/spec_core/blob/1.2.3/3MF%20Core%20Specification.md#chapter-4-object-resources)
+The \<mesh> element, defined in [the 3MF Core Specification meshes](https://github.com/3MFConsortium/spec_core/blob/1.2.3/3MF%20Core%20Specification.md#41-meshes), is enhanced with an optional \<booleans> element, declaring that the shape of the object is exclusively defined by a "boolean operation" instead of a triangle mesh or other ways of specifying a shape as defined in other 3MF extensions. 
+
+>**Note**: this requires that the \<vertices> and the \<triangle> elements are empty, overriding the core spec definition.
 
 ## 2.1. Booleans
 
@@ -111,15 +115,15 @@ The optional \<booleans> element contains one or more \<boolean> elements to per
 
 **operation** - The boolean operation to perform. The options for the boolean operations are the following:
 
-1.	*union*. The resulting object shape is defined as the merger of the shapes. The resulting object surface property is defined by the property of the surface property defining the outer surface. If material and the volumetric property, if available, in the overlapped volume is defined by the added object, as defined by [the 3MF Core Specification overlapping order](https://github.com/3MFConsortium/spec_core/blob/1.2.3/3MF%20Core%20Specification.md#412-overlapping-order)
+1.	*union*. The resulting object shape is defined as the merger of the shapes. The resulting object surface property is defined by the property of the surface property defining the outer surface, as defined by [the 3MF Core Specification overlapping order](https://github.com/3MFConsortium/spec_core/blob/1.2.3/3MF%20Core%20Specification.md#412-overlapping-order)
 
     union(base,a,b,c) = base Ս (a Ս b Ս c) = ((base Ս a) Ս b) Ս c
 
-2.  *difference*. The resulting object shape is defined by the shape in the base object shape that is not in any other object shape. The resulting object surface property, where overlaps, is defined by the object surface property of the subtracting object(s), or no-property is the subtracting object has no property defined in that surface. While the volume properties are defined by the volume remaining from the base object.
+2.  *difference*. The resulting object shape is defined by the shape in the base object shape that is not in any other object shape. The resulting object surface property, where overlaps, is defined by the object surface property of the subtracting object(s), or no-property is the subtracting object has no property defined in that surface.
 
     difference(base,a,b,c) = base - (a Ս b Ս c) = ((base - a) - b) - c
 
-3.  *intersection*. The resulting object shape is defined as the common (clipping) shape in all objects. The resulting object surface property is defined as the object surface property of the object defining the new surface, or no-property is the subtracting object has no property defined in that surface. While the volume properties are defined by the volume remaining from the base object.
+3.  *intersection*. The resulting object shape is defined as the common (clipping) shape in all objects. The resulting object surface property is defined as the object surface property of the object defining the new surface, or no-property when the subtracting object has no property defined in that surface.
 
     intersection(base,a,b,c) = base Ո (a Ս b Ս c) = ((base Ո a) Ո b) Ո c
 
@@ -133,7 +137,7 @@ The following diagrams, from the ***CSG*** Wikipedia, show the three operations:
 | :---: | :---: | :---: |
 | **union**: Merger of two objects into one | **difference**: Subtraction of object from another one | **intersection**: Portion common to objects |
 
-[TBD] The subtracting (difference or intersection) objects MUST **only** contain references to meshes or a booleans tree containing surfaces defined by triangle meshes. They MUST NOT contain surfaces defined by any other 3MF extension.
+>**Note**: The subtracting (difference or intersection) objects MUST **only** contain references to meshes containing surfaces defined by triangle meshes. They MUST NOT contain surfaces defined by any other 3MF extension.
 
 Similarly as defined in [the 3MF Core Specification object resources](https://github.com/3MFConsortium/spec_core/blob/1.2.3/3MF%20Core%20Specification.md#chapter-4-object-resources), consumers MUST ignore the object type of objects containing a \<boolean> element, since the type is always overridden by descendant objects. Producers MUST NOT assign pid or pindex attributes to objects that contain booleans. This ensures that an object with no material will not be split into two representations with different materials due to being referenced as a boolean in multiple objects.
 
@@ -188,11 +192,9 @@ See [the 3MF Core Specification glossary](https://github.com/3MFConsortium/spec_
   ]]></xs:documentation>
   </xs:annotation>
   <!-- Complex Types -->
-  <xs:complexType name="CT_Object">
+  <xs:complexType name="CT_Mesh">
     <xs:sequence>
-      <xs:choice>
-        <xs:element ref="booleans"/>
-      </xs:choice>
+      <xs:element ref="booleans"/>
       <xs:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="2147483647"/>
     </xs:sequence>
   </xs:complexType>
@@ -243,7 +245,6 @@ See [the 3MF Core Specification glossary](https://github.com/3MFConsortium/spec_
   </xs:simpleType>
   
   <!-- Elements -->
-  <xs:element name="object" type="CT_Object"/>
   <xs:element name="booleans" type="CT_Booleans"/>
   <xs:element name="boolean" type="CT_Boolean"/>
 </xs:schema>
@@ -264,44 +265,52 @@ See [the 3MF Core Specification glossary](https://github.com/3MFConsortium/spec_
 	xmlns:bo="http://schemas.microsoft.com/3dmanufacturing/booleanoperations/2022/06"
 	requiredextensions="bo" unit="millimeter" xml:lang="en-US">
     <resources>
-        <basematerials id="2">
-          <base name="Red" displaycolor="#FF0000" />
-          <base name="Green" displaycolor="#00FF00" />
-          <base name="Blue" displaycolor="#0000FF" />
-        <basematerials>
-        <object id="3" type="model" name="Cube" pid="2" pindex="0">
-            <mesh>
-                <vertices>...</vertices>
-                <triangles>...</triangles>
-            </mesh>
-        </object>
-        <object id="4" type="model" name="Sphere" pid="2" pindex="2">
-            <mesh>
-                <vertices>...</vertices>
-                <triangles>...</triangles>
-           </mesh>
-        </object>
-        <object id="5" type="model" name="Cylinder" pid="2" pindex="1">
-            <mesh>
-                <vertices>...</vertices>
-                <triangles>...</triangles>
-            </mesh>
-        </object>
-        <object id="6" type="model" name="Intersected">
-            <bo:booleans objectid="3" operation="intersection" transform="0.0741111 0 0 0 0.0741111 0 0 0 0.0741111 2.91124 -0.400453 1.60607">
-                <bo:boolean objectid="4" transform="0.0741111 0 0 0 0.0741111 0 0 0 0.0741111 2.91124 -0.400453 1.60607"/>
-            </bo:booleans>
-        </object>
-        <object id="10" type="model" name="Full part">
-            <bo:booleans objectid="6" operation="difference">
-                <bo:boolean objectid="5" transform="0.0271726 0 0 0 0 0.0271726 0 -0.0680034 0 4.15442 3.58836 5.23705" />
-                <bo:boolean objectid="5" transform="0.0272014 0 0 0 0.0272012 0 0 0 0.0680035 4.05357 6.33412 3.71548" />
-                <bo:boolean objectid="5" transform="0 0 -0.0272013 0 0.0272013 0 0.0680032 0 0 5.05103 6.32914 3.35287" />
-            </bo:booleans>
-        </object>
+      <basematerials id="2">
+        <base name="Red" displaycolor="#FF0000" />
+        <base name="Green" displaycolor="#00FF00" />
+        <base name="Blue" displaycolor="#0000FF" />
+      <basematerials>
+      <object id="3" type="model" name="Cube" pid="2" pindex="0">
+        <mesh>
+          <vertices>...</vertices>
+          <triangles>...</triangles>
+        </mesh>
+      </object>
+      <object id="4" type="model" name="Sphere" pid="2" pindex="2">
+        <mesh>
+          <vertices>...</vertices>
+          <triangles>...</triangles>
+        </mesh>
+      </object>
+      <object id="5" type="model" name="Cylinder" pid="2" pindex="1">
+        <mesh>
+          <vertices>...</vertices>
+          <triangles>...</triangles>
+        </mesh>
+      </object>
+      <object id="6" type="model" name="Intersected">
+        <mesh>
+          <vertices/>
+          <triangles/>
+          <bo:booleans objectid="3" operation="intersection" transform="0.0741111 0 0 0 0.0741111 0 0 0 0.0741111 2.91124 -0.400453 1.60607">
+            <bo:boolean objectid="4" transform="0.0741111 0 0 0 0.0741111 0 0 0 0.0741111 2.91124 -0.400453 1.60607"/>
+          </bo:booleans>
+        </mesh>
+      </object>
+      <object id="10" type="model" name="Full part">
+        <mesh>
+          <vertices/>
+          <triangles/>
+          <bo:booleans objectid="6" operation="difference">
+            <bo:boolean objectid="5" transform="0.0271726 0 0 0 0 0.0271726 0 -0.0680034 0 4.15442 3.58836 5.23705" />
+            <bo:boolean objectid="5" transform="0.0272014 0 0 0 0.0272012 0 0 0 0.0680035 4.05357 6.33412 3.71548" />
+            <bo:boolean objectid="5" transform="0 0 -0.0272013 0 0.0272013 0 0.0680032 0 0 5.05103 6.32914 3.35287" />
+          </bo:booleans>
+        </mesh>
+      </object>
     </resources>
     <build>
-        <item objectid="10" transform="25.4 0 0 0 25.4 0 0 0 25.4 0 0 0" />
+      <item objectid="10" transform="25.4 0 0 0 25.4 0 0 0 25.4 0 0 0" />
     </build>
 </model>
 ```
