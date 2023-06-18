@@ -93,7 +93,7 @@ Element \<mesh>
 
 The \<mesh> element, defined in [the 3MF Core Specification meshes](https://github.com/3MFConsortium/spec_core/blob/1.2.3/3MF%20Core%20Specification.md#41-meshes), is enhanced with an optional \<booleans> element, declaring that the shape of the object is exclusively defined by a "boolean operation" instead of a triangle mesh or other ways of specifying a shape as defined in other 3MF extensions. 
 
->**Note:** this requires that the \<vertices> and the \<triangle> elements are empty, overriding the core spec definition.
+The \<vertices> and the \<triangle> elements MUST be empty, overriding the core spec definition, and MUST NOT contain any shape defined by any other 3MF extentension.
 
 ## 2.1. Booleans
 
@@ -111,7 +111,7 @@ Element \<booleans>
 
 The optional \<booleans> element contains one or more \<boolean> elements to perform the boolean operation to the referenced object.
 
-**objectid** - Selects the base object to apply the boolean operation. The object MUST be a mesh or another booleans object of type "model". It MUST NOT reference a components object.
+**objectid** - Selects the base object to apply the boolean operation. The object MUST be a mesh object of type "model". It MUST NOT reference a components object.
 
 **operation** - The boolean operation to perform. The options for the boolean operations are the following:
 
@@ -137,8 +137,6 @@ The following diagrams, from the ***CSG*** Wikipedia, show the three operations:
 | :---: | :---: | :---: |
 | **union**: Merger of two objects into one | **difference**: Subtraction of object from another one | **intersection**: Portion common to objects |
 
->**Note:** The subtracting (difference or intersection) objects MUST **only** contain references to meshes containing surfaces defined by triangle meshes. They MUST NOT contain surfaces defined by any other 3MF extension.
-
 Similarly as defined in [the 3MF Core Specification object resources](https://github.com/3MFConsortium/spec_core/blob/1.2.3/3MF%20Core%20Specification.md#chapter-4-object-resources), consumers MUST ignore the object type of objects containing a \<boolean> element, since the type is always overridden by descendant objects. Producers MUST NOT assign pid or pindex attributes to objects that contain booleans. This ensures that an object with no material will not be split into two representations with different materials due to being referenced as a boolean in multiple objects.
 
 ### 2.1.1. Boolean
@@ -154,9 +152,11 @@ Element \<boolean>
 | path | **ST\_Path** | | | A file path to the model file being referenced. The path is an absolute path from the root of the 3MF container. |
 | @anyAttribute | | | | |
 
-The \<boolean> element selects a pre-defined object resource to perform a boolean operation to the base object referenced in the enclosing \<booleans> element.
+The \<boolean> element selects a pre-defined object resource to perform a boolean operation to the base object referenced in the enclosing \<booleans> element. The boolean operation are applied in the sequence order by the each \<boolean> element.
 
-**objectid** - Selects the object with the mesh to apply the boolean operation. The object MUST be a mesh or another booleans object of type "model". It MUST NOT reference a components object.
+**objectid** - Selects the object with the mesh to apply the boolean operation. The object MUST be a mesh object of type "model", excluding a booleans mesh defined in this extension. It MUST NOT reference a components object.
+
+>**TBD:** pending to close whether the referenced mesh MUST be restricted to triangle meshes, or it allows other extensions.
 
 **transform** - The transform to apply to the selected object before the boolean operation.
 
