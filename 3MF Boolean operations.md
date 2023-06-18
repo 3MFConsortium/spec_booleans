@@ -71,11 +71,11 @@ The 3MF Core Specification defines the \<components> element in the \<object> re
 
 This extension is based in a simplified Constructive Solid Geometry ([CSG](https://en.wikipedia.org/wiki/Constructive_solid_geometry)).
 
-However, to limit complexity in the consumer, this spec reduces the scope to a sequence of boolean operations.
+However, to limit complexity in the consumer, this spec reduces the scope to an ordered sequence of boolean operations (left to right).
 
 ![CSG binary sequence](images/Csg_sequence.png)
 
-This document describes a new element \<booleans> in the \<mesh> elements that specifies a new mesh type, other than triangle mesh. This element is OPTIONAL for producers but MUST be supported by consumers that specify support for the 3MF Boolean Operations Extension.
+This document describes a new element \<booleans> in the \<mesh> elements that specifies a new mesh element type, other than triangle mesh. This element is OPTIONAL for producers but MUST be supported by consumers that specify support for the 3MF Boolean Operations Extension.
 
 The \<booleans> element defines a new mesh type conforming a sequence of boolean operations to referenced meshes.
 
@@ -91,7 +91,7 @@ Element \<mesh>
 
 ![Mesh](images/2.mesh.png)
 
-The \<mesh> element, defined in [the 3MF Core Specification meshes](https://github.com/3MFConsortium/spec_core/blob/1.2.3/3MF%20Core%20Specification.md#41-meshes), is enhanced with an optional \<booleans> element, declaring that the shape of the object is exclusively defined by a "boolean operation" instead of a triangle mesh or other ways of specifying a shape as defined in other 3MF extensions. 
+The \<mesh> element, defined in [the 3MF Core Specification meshes](https://github.com/3MFConsortium/spec_core/blob/1.2.3/3MF%20Core%20Specification.md#41-meshes), is enhanced with an optional \<booleans> element. When specified, the shape of the object is exclusively defined by a "boolean operation" instead of the triangle mesh in the core specification or other 3MF extensions. 
 
 The \<vertices> and the \<triangle> elements MUST be empty, overriding the core spec definition, and MUST NOT contain any shape defined by any other 3MF extentension.
 
@@ -109,7 +109,7 @@ Element \<booleans>
 | path | **ST\_Path** | | | A file path to the base object file being referenced. The path is an absolute path from the root of the 3MF container. |
 | @anyAttribute | | | | |
 
-The optional \<booleans> element contains one or more \<boolean> elements to perform the boolean operation to the referenced object.
+The optional \<booleans> element, contains one or more \<boolean> elements to perform an ordered sequence of boolean operation to the referenced base object.
 
 **objectid** - Selects the base object to apply the boolean operation. The object MUST be a mesh object of type "model". It MUST NOT reference a components object.
 
@@ -152,7 +152,7 @@ Element \<boolean>
 | path | **ST\_Path** | | | A file path to the model file being referenced. The path is an absolute path from the root of the 3MF container. |
 | @anyAttribute | | | | |
 
-The \<boolean> element selects a pre-defined object resource to perform a boolean operation to the base object referenced in the enclosing \<booleans> element. The boolean operation are applied in the sequence order by the each \<boolean> element.
+The \<boolean> element selects a pre-defined object resource to perform a boolean operation to the base object referenced in the enclosing \<booleans> element. The boolean operation are applied in the sequence order of the \<boolean> element.
 
 **objectid** - Selects the object with the mesh to apply the boolean operation. The object MUST be a mesh object of type "model", excluding a booleans mesh defined in this extension. It MUST NOT reference a components object.
 
