@@ -69,15 +69,15 @@ See [the 3MF Core Specification software conformance](https://github.com/3MFCons
 
 The 3MF Core Specification defines the \<components> element in the \<object> resource as definition of a tree of different objects to form an assembly, with the intent to allow the reuse of model definitions for an efficient encoding. The resultant shape of a \<components> element is the aggregation :of each \<component> object element.
 
-This extension is based in a simplified Constructive Solid Geometry ([CSG](https://en.wikipedia.org/wiki/Constructive_solid_geometry)).
+This extension defines how to combine different objects into a single object. It is based in Constructive Solid Geometry ([CSG](https://en.wikipedia.org/wiki/Constructive_solid_geometry)).
 
-However, to limit complexity in the consumer, this spec reduces the scope to an ordered sequence of boolean operations (left to right).
+However, to limit complexity in the consumer, this spec reduces the GCG scope to an ordered sequence of boolean operations (left to right in diagram below).
 
 ![CSG binary sequence](images/Csg_sequence.png)
 
 This document describes a new element \<booleans> in the \<mesh> elements that specifies a new mesh element type, other than triangle mesh. This element is OPTIONAL for producers but MUST be supported by consumers that specify support for the 3MF Boolean Operations Extension.
 
-The \<booleans> element defines a new mesh type conforming a sequence of boolean operations to referenced meshes.
+The \<booleans> element defines a sequence of boolean operations to the referenced meshes.
 
 This is a non-backwards compatible change since it declares a different content of the mesh element, with empty vertices and triangles. Therefore, a 3MF package which uses "booleans" meshes MUST enlist the 3MF Boolean Operations Extension as “required extension”, as defined in the core specification.
 
@@ -91,7 +91,7 @@ Element \<mesh>
 
 ![Mesh](images/2.mesh.png)
 
-The \<mesh> element, defined in [the 3MF Core Specification meshes](https://github.com/3MFConsortium/spec_core/blob/1.2.3/3MF%20Core%20Specification.md#41-meshes), is enhanced with an optional \<booleans> element. When specified, the shape of the object is exclusively defined by a "boolean operation" instead of the triangle mesh in the core specification or other 3MF extensions. 
+The \<mesh> element, defined in [the 3MF Core Specification meshes](https://github.com/3MFConsortium/spec_core/blob/1.2.3/3MF%20Core%20Specification.md#41-meshes), is enhanced with an optional \<booleans> element. When specified, the shape of the object is exclusively defined by a "boolean operation", instead of of being defined by the triangle mesh in the core specification or other 3MF extensions. 
 
 The \<vertices> and the \<triangle> elements MUST be empty, overriding the core spec definition, and MUST NOT contain any shape defined by any other 3MF extentension.
 
@@ -109,7 +109,7 @@ Element \<booleans>
 | path | **ST\_Path** | | | A file path to the base object file being referenced. The path is an absolute path from the root of the 3MF container. |
 | @anyAttribute | | | | |
 
-The optional \<booleans> element, contains one or more \<boolean> elements to perform an ordered sequence of boolean operation to the referenced base object.
+The optional \<booleans> element, contains one or more \<boolean> elements to perform an ordered sequence of boolean operation onto the referenced base object.
 
 **objectid** - Selects the base object to apply the boolean operation. The object MUST be a mesh object of type "model". It MUST NOT reference a components object.
 
@@ -137,7 +137,7 @@ The following diagrams, from the ***CSG*** Wikipedia, show the three operations:
 | :---: | :---: | :---: |
 | **union**: Merger of two objects into one | **difference**: Subtraction of object from another one | **intersection**: Portion common to objects |
 
-Similarly as defined in [the 3MF Core Specification object resources](https://github.com/3MFConsortium/spec_core/blob/1.2.3/3MF%20Core%20Specification.md#chapter-4-object-resources), consumers MUST ignore the object type of objects containing a \<boolean> element, since the type is always overridden by descendant objects. Producers MUST NOT assign pid or pindex attributes to objects that contain booleans. This ensures that an object with no material will not be split into two representations with different materials due to being referenced as a boolean in multiple objects.
+Similarly as defined in [the 3MF Core Specification object resources](https://github.com/3MFConsortium/spec_core/blob/1.2.3/3MF%20Core%20Specification.md#chapter-4-object-resources), consumers MUST ignore the object type of objects containing a "booleans" mesh, since the type is always overridden by descendant objects. Producers MUST NOT assign pid or pindex attributes to objects that contain a "booleans" mesh. This ensures that an object with no material will not be split into two representations with different materials due to being referenced as a boolean in multiple objects.
 
 ### 2.1.1. Boolean
 
@@ -147,14 +147,14 @@ Element \<boolean>
 
 | Name   | Type   | Use   | Default   | Annotation |
 | --- | --- | --- | --- | --- |
-| objectid | **ST\_ResourceID** | required | | It references the mesh object id performing the boolean operation. |
+| objectid | **ST\_ResourceID** | required | | It references the object id to perform the boolean operation. |
 | transform | **ST\_Matrix3D** | | | A matrix transform (see [3.3. 3D Matrices](#33-3d-matrices)) applied to the item to be outputted. |
 | path | **ST\_Path** | | | A file path to the model file being referenced. The path is an absolute path from the root of the 3MF container. |
 | @anyAttribute | | | | |
 
-The \<boolean> element selects a pre-defined object resource to perform a boolean operation to the base object referenced in the enclosing \<booleans> element. The boolean operation are applied in the sequence order of the \<boolean> element.
+The \<boolean> element selects a pre-defined object resource to perform a boolean operation to the base object referenced in the enclosing \<booleans> element. The boolean operation is applied in the sequence order of the \<boolean> element.
 
-**objectid** - Selects the object with the mesh to apply the boolean operation. The object MUST be a mesh object of type "model", excluding a booleans mesh defined in this extension. It MUST NOT reference a components object.
+**objectid** - Selects the object with the mesh to apply the boolean operation. The object MUST be a mesh object of type "model", excluding a "booleans" mesh defined in this extension. It MUST NOT reference a components object.
 
 >**TBD:** pending to close whether the referenced mesh MUST be restricted to triangle meshes, or it allows other extensions.
 
@@ -302,6 +302,17 @@ See [the 3MF Core Specification glossary](https://github.com/3MFConsortium/spec_
           <vertices/>
           <triangles/>
           <bo:booleans objectid="6" operation="difference">
+            <bo:boolean objectid="5" transform="0.0271726 0 0 0 0 0.0271726 0 -0.0680034 0 4.15442 3.58836 5.23705" />
+            <bo:boolean objectid="5" transform="0.0272014 0 0 0 0.0272012 0 0 0 0.0680035 4.05357 6.33412 3.71548" />
+            <bo:boolean objectid="5" transform="0 0 -0.0272013 0 0.0272013 0 0.0680032 0 0 5.05103 6.32914 3.35287" />
+          </bo:booleans>
+        </mesh>
+      </object>
+      <object id="10" type="model" name="Full part">
+        <mesh>
+          <vertices/>
+          <triangles/>
+          <bo:booleans objectid="10" operation="difference">
             <bo:boolean objectid="5" transform="0.0271726 0 0 0 0 0.0271726 0 -0.0680034 0 4.15442 3.58836 5.23705" />
             <bo:boolean objectid="5" transform="0.0272014 0 0 0 0.0272012 0 0 0 0.0680035 4.05357 6.33412 3.71548" />
             <bo:boolean objectid="5" transform="0 0 -0.0272013 0 0.0272013 0 0.0680032 0 0 5.05103 6.32914 3.35287" />
