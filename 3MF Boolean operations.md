@@ -93,7 +93,7 @@ Element \<mesh>
 
 The \<mesh> element, defined in [the 3MF Core Specification meshes](https://github.com/3MFConsortium/spec_core/blob/1.2.3/3MF%20Core%20Specification.md#41-meshes), is enhanced with an optional \<booleans> element. When specified, the shape of the object is exclusively defined by a "boolean operation", instead of of being defined by the triangle mesh in the core specification or other 3MF extensions. 
 
-The \<vertices> and the \<triangle> elements MUST be empty, overriding the core spec definition, and MUST NOT contain any shape defined by any other 3MF extentension.
+The \<vertices> and the \<triangle> elements MUST be empty, overriding the core spec definition, and MUST NOT contain any shape defined by any other 3MF extension.
 
 ## 2.1. Booleans
 
