@@ -152,9 +152,7 @@ Element \<boolean>
 
 The \<boolean> element selects a pre-defined object resource to perform a boolean operation to the base object referenced in the enclosing \<booleans> element. The boolean operation is applied in the sequence order of the \<boolean> element.
 
-**objectid** - Selects the object with the mesh to apply the boolean operation. The object MUST be a mesh object of type "model".
-
->**TBD:** pending to close whether the referenced mesh MUST be restricted to triangle meshes, or it allows other extensions.
+**objectid** - Selects the object with the mesh to apply the boolean operation. The object MUST be only a triangle mesh object of type "model". 
 
 **transform** - The transform to apply to the selected object before the boolean operation.
 
