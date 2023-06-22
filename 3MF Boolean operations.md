@@ -69,13 +69,15 @@ See [the 3MF Core Specification software conformance](https://github.com/3MFCons
 
 The 3MF Core Specification defines the \<components> element in the \<object> resource as definition of a tree of different objects to form an assembly, with the intent to allow the reuse of model definitions for an efficient encoding. The resultant shape of a \<components> element is the aggregation of each \<component> object element.
 
-This extension is based in a simplified Constructive Solid Geometry ([CSG](https://en.wikipedia.org/wiki/Constructive_solid_geometry)) described in the following diagram, by limiting the scope of the boolean operations:
+This extension defines how to combine different objects into a single object. It is based in Constructive Solid Geometry ([CSG](https://en.wikipedia.org/wiki/Constructive_solid_geometry)).
 
-![CSG binary tree](images/Csg_tree.png)
+However, to limit complexity in the consumer, this spec reduces the GCG scope to an ordered sequence of boolean operations (left to right in diagram below).
+
+![CSG binary sequence](images/Csg_sequence.png)
 
 This document describes a new element \<booleans> in the \<object> elements that specifies a new object type, other than mesh or components. This element is OPTIONAL for producers but MUST be supported by consumers that specify support for the 3MF Boolean Operations Extension.
 
-The \<booleans> element defines a new object type conforming a non-binary tree of boolean operations to referenced mesh or other booleans objects.
+The \<booleans> element defines a sequence of boolean operations to the referenced objects.
 
 This is a non-backwards compatible change since it declares a different type of object. Therefore, a 3MF package which uses "booleans" objects MUST enlist the 3MF Boolean Operations Extension as “required extension”, as defined in the core specification.
 
@@ -105,21 +107,21 @@ Element \<booleans>
 | path | **ST\_Path** | | | A file path to the base object file being referenced. The path is an absolute path from the root of the 3MF container. |
 | @anyAttribute | | | | |
 
-The optional \<booleans> element contains one or more \<boolean> elements to perform the boolean operation to the referenced object.
+The optional \<booleans> element contains one or more \<boolean> elements to perform an ordered sequence of boolean operation onto the referenced base object.
 
 **objectid** - Selects the base object to apply the boolean operation. The object MUST be a mesh or another booleans object of type "model". It MUST NOT reference a components object.
 
 **operation** - The boolean operation to perform. The options for the boolean operations are the following:
 
-1.	*union*. The resulting object shape is defined as the merger of the shapes. The resulting object surface property is defined by the property of the surface property defining the outer surface. If material and the volumetric property, if available, in the overlapped volume is defined by the added object, as defined by [the 3MF Core Specification overlapping order](https://github.com/3MFConsortium/spec_core/blob/1.2.3/3MF%20Core%20Specification.md#412-overlapping-order)
+1.	*union*. The resulting object shape is defined as the merger of the shapes. The resulting object surface property is defined by the property of the surface property defining the outer surface, as defined by [the 3MF Core Specification overlapping order](https://github.com/3MFConsortium/spec_core/blob/1.2.3/3MF%20Core%20Specification.md#412-overlapping-order)
 
     union(base,a,b,c) = base Ս (a Ս b Ս c) = ((base Ս a) Ս b) Ս c
 
-2.  *difference*. The resulting object shape is defined by the shape in the base object shape that is not in any other object shape. The resulting object surface property, where overlaps, is defined by the object surface property of the subtracting object(s), or no-property is the subtracting object has no property defined in that surface. While the volume properties are defined by the volume remaining from the base object.
+2.  *difference*. The resulting object shape is defined by the shape in the base object shape that is not in any other object shape. The resulting object surface property, where overlaps, is defined by the object surface property of the subtracting object(s), or no-property when the subtracting object has no property defined in that surface.
 
     difference(base,a,b,c) = base - (a Ս b Ս c) = ((base - a) - b) - c
 
-3.  *intersection*. The resulting object shape is defined as the common (clipping) shape in all objects. The resulting object surface property is defined as the object surface property of the object defining the new surface, or no-property is the subtracting object has no property defined in that surface. While the volume properties are defined by the volume remaining from the base object.
+3.  *intersection*. The resulting object shape is defined as the common (clipping) shape in all objects. The resulting object surface property is defined as the object surface property of the object defining the new surface, or no-property when that object has no property defined in the new surface.
 
     intersection(base,a,b,c) = base Ո (a Ս b Ս c) = ((base Ո a) Ո b) Ո c
 
@@ -132,8 +134,6 @@ The following diagrams, from the ***CSG*** Wikipedia, show the three operations:
 | ![operation = union](images/Boolean_union.png) | ![operation = difference](images/Boolean_difference.png) | ![operation = intersection](images/Boolean_intersect.png) |
 | :---: | :---: | :---: |
 | **union**: Merger of two objects into one | **difference**: Subtraction of object from another one | **intersection**: Portion common to objects |
-
-[TBD] The subtracting (difference or intersection) objects MUST **only** contain references to meshes or a booleans tree containing surfaces defined by triangle meshes. They MUST NOT contain surfaces defined by any other 3MF extension.
 
 Similarly as defined in [the 3MF Core Specification object resources](https://github.com/3MFConsortium/spec_core/blob/1.2.3/3MF%20Core%20Specification.md#chapter-4-object-resources), consumers MUST ignore the object type of objects containing a \<boolean> element, since the type is always overridden by descendant objects. Producers MUST NOT assign pid or pindex attributes to objects that contain booleans. This ensures that an object with no material will not be split into two representations with different materials due to being referenced as a boolean in multiple objects.
 
@@ -150,9 +150,11 @@ Element \<boolean>
 | path | **ST\_Path** | | | A file path to the model file being referenced. The path is an absolute path from the root of the 3MF container. |
 | @anyAttribute | | | | |
 
-The \<boolean> element selects a pre-defined object resource to perform a boolean operation to the base object referenced in the enclosing \<booleans> element.
+The \<boolean> element selects a pre-defined object resource to perform a boolean operation to the base object referenced in the enclosing \<booleans> element. The boolean operation is applied in the sequence order of the \<boolean> element.
 
-**objectid** - Selects the object with the mesh to apply the boolean operation. The object MUST be a mesh or another booleans object of type "model". It MUST NOT reference a components object.
+**objectid** - Selects the object with the mesh to apply the boolean operation. The object MUST be a mesh object of type "model".
+
+>**TBD:** pending to close whether the referenced mesh MUST be restricted to triangle meshes, or it allows other extensions.
 
 **transform** - The transform to apply to the selected object before the boolean operation.
 
