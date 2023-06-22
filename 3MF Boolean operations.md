@@ -123,7 +123,7 @@ The optional \<booleans> element, contains one or more \<boolean> elements to pe
 
     difference(base,a,b,c) = base - (a Ս b Ս c) = ((base - a) - b) - c
 
-3.  *intersection*. The resulting object shape is defined as the common (clipping) shape in all objects. The resulting object surface property is defined as the object surface property of the object defining the new surface, or no-property when the subtracting object has no property defined in that surface.
+3.  *intersection*. The resulting object shape is defined as the common (clipping) shape in all objects. The resulting object surface property is defined as the object surface property of the object defining the new surface, or no-property when that object has no property defined in the new surface.
 
     intersection(base,a,b,c) = base Ո (a Ս b Ս c) = ((base Ո a) Ո b) Ո c
 
