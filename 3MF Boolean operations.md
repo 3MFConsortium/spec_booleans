@@ -67,7 +67,7 @@ See [the 3MF Core Specification software conformance](https://github.com/3MFCons
 
 # Chapter 1. Overview of Additions
 
-The 3MF Core Specification defines the \<components> element in the \<object> resource as definition of a tree of different objects to form an assembly, with the intent to allow the reuse of model definitions for an efficient encoding. The resultant shape of a \<components> element is the aggregation :of each \<component> object element.
+The 3MF Core Specification defines the \<components> element in the \<object> resource as definition of a tree of different objects to form an assembly, with the intent to allow the reuse of model definitions for an efficient encoding. The resultant shape of a \<components> element is the aggregation of each \<component> object element.
 
 This extension defines how to combine different objects into a single object. It is based in Constructive Solid Geometry ([CSG](https://en.wikipedia.org/wiki/Constructive_solid_geometry)).
 
@@ -154,9 +154,7 @@ Element \<boolean>
 
 The \<boolean> element selects a pre-defined object resource to perform a boolean operation to the base object referenced in the enclosing \<booleans> element. The boolean operation is applied in the sequence order of the \<boolean> element.
 
-**objectid** - Selects the object with the mesh to apply the boolean operation. The object MUST be a mesh object of type "model", excluding a "booleans" mesh defined in this extension. It MUST NOT reference a components object.
-
->**TBD:** pending to close whether the referenced mesh MUST be restricted to triangle meshes, or it allows other extensions.
+**objectid** - Selects the object with the mesh to apply the boolean operation. The object MUST be only a triangle mesh object of type "model". 
 
 **transform** - The transform to apply to the selected object before the boolean operation.
 
