@@ -135,7 +135,7 @@ The following diagrams, from the ***CSG*** Wikipedia, show the three operations:
 | :---: | :---: | :---: |
 | **union**: Merger of two objects into one | **difference**: Subtraction of object from another one | **intersection**: Portion common to objects |
 
-Similarly as defined in [the 3MF Core Specification object resources](https://github.com/3MFConsortium/spec_core/blob/1.2.3/3MF%20Core%20Specification.md#chapter-4-object-resources), consumers MUST ignore the object type of objects containing a \<boolean> element, since the type is always overridden by descendant objects. Producers MUST NOT assign pid or pindex attributes to objects that contain booleans. This ensures that an object with no material will not be split into two representations with different materials due to being referenced as a boolean in multiple objects.
+Similarly as defined in [the 3MF Core Specification object resources](https://github.com/3MFConsortium/spec_core/blob/1.2.3/3MF%20Core%20Specification.md#chapter-4-object-resources), consumers MUST ignore the object type of enclosing object, since the type is always overridden by descendant objects. Producers MUST NOT assign pid or pindex attributes to objects that contain booleans. This ensures that an object with no material will not be split into two representations with different materials due to being referenced as a boolean in multiple objects.
 
 ### 2.1.1. Boolean
 
@@ -256,6 +256,8 @@ See [the 3MF Core Specification glossary](https://github.com/3MFConsortium/spec_
 | BooleanOperation | [http://schemas.microsoft.com/3dmanufacturing/booleanoperations/2022/06](http://schemas.microsoft.com/3dmanufacturing/booleanoperations/2022/06) |
 
 # Appendix D: Example file
+
+The diagram in [Chapter 1. Overview of Additions](https://github.com/3MFConsortium/spec_booleans/blob/dev_0.7/3MF%20Boolean%20operations.md#chapter-1-overview-of-additions) could be represented with the following model.
 
 ## 3D model
 ```xml
