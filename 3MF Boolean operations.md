@@ -137,7 +137,7 @@ The following diagrams, from the ***CSG*** Wikipedia, show the three operations:
 | :---: | :---: | :---: |
 | **union**: Merger of two objects into one | **difference**: Subtraction of object from another one | **intersection**: Portion common to objects |
 
-Similarly as defined in [the 3MF Core Specification object resources](https://github.com/3MFConsortium/spec_core/blob/1.2.3/3MF%20Core%20Specification.md#chapter-4-object-resources), consumers MUST ignore the object type of objects containing a "booleans" mesh, since the type is always overridden by descendant objects. Producers MUST NOT assign pid or pindex attributes to objects that contain a "booleans" mesh. This ensures that an object with no material will not be split into two representations with different materials due to being referenced as a boolean in multiple objects.
+Similarly as defined in [the 3MF Core Specification object resources](https://github.com/3MFConsortium/spec_core/blob/1.2.3/3MF%20Core%20Specification.md#chapter-4-object-resources), consumers MUST ignore the object type of the enclosing object, since the type is always overridden by descendant objects. Producers MUST NOT assign pid or pindex attributes to objects that contain a "booleans" mesh. This ensures that an object with no material will not be split into two representations with different materials due to being referenced as a boolean in multiple objects.
 
 ### 2.1.1. Boolean
 
@@ -256,6 +256,8 @@ See [the 3MF Core Specification glossary](https://github.com/3MFConsortium/spec_
 
 # Appendix D: Example file
 
+The diagram in [Chapter 1. Overview of Additions](https://github.com/3MFConsortium/spec_booleans/blob/dev_0.8/3MF%20Boolean%20operations.md#chapter-1-overview-of-additions) could be represented with the following model.
+
 ## 3D model
 ```xml
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
@@ -300,17 +302,6 @@ See [the 3MF Core Specification glossary](https://github.com/3MFConsortium/spec_
           <vertices/>
           <triangles/>
           <bo:booleans objectid="6" operation="difference">
-            <bo:boolean objectid="5" transform="0.0271726 0 0 0 0 0.0271726 0 -0.0680034 0 4.15442 3.58836 5.23705" />
-            <bo:boolean objectid="5" transform="0.0272014 0 0 0 0.0272012 0 0 0 0.0680035 4.05357 6.33412 3.71548" />
-            <bo:boolean objectid="5" transform="0 0 -0.0272013 0 0.0272013 0 0.0680032 0 0 5.05103 6.32914 3.35287" />
-          </bo:booleans>
-        </mesh>
-      </object>
-      <object id="10" type="model" name="Full part">
-        <mesh>
-          <vertices/>
-          <triangles/>
-          <bo:booleans objectid="10" operation="difference">
             <bo:boolean objectid="5" transform="0.0271726 0 0 0 0 0.0271726 0 -0.0680034 0 4.15442 3.58836 5.23705" />
             <bo:boolean objectid="5" transform="0.0272014 0 0 0 0.0272012 0 0 0 0.0680035 4.05357 6.33412 3.71548" />
             <bo:boolean objectid="5" transform="0 0 -0.0272013 0 0.0272013 0 0.0680032 0 0 5.05103 6.32914 3.35287" />
