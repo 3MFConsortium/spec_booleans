@@ -13,7 +13,7 @@
 
 
 
-| **Version** | 0.7.12 |
+| **Version** | 0.9.0 |
 | --- | --- |
 | **Status** | Draft |
 
@@ -27,7 +27,7 @@
 - [Part I: 3MF Documents](#part-i-3mf-documents)
   * [Chapter 1. Overview of Additions](#chapter-1-overview-of-additions)
   * [Chapter 2. Object Resources](#chapter-2-object-resources)
-    + [2.1. Booleans](#21-booleans)
+    + [2.1. Boolean Shape](#21-boolean-shape)
 - [Part II. Appendices](#part-ii-appendices)
   * [Appendix A. Glossary](#appendix-a-glossary)
   * [Appendix B. 3MF XSD Schema](#appendix-b-3mf-xsd-schema)
@@ -53,7 +53,7 @@ This extension MUST be used only with Core specification 1.x.
 
 See [the 3MF Core Specification conventions](https://github.com/3MFConsortium/spec_core/blob/1.3.0/3MF%20Core%20Specification.md#document-conventions).
 
-In this extension specification, as an example, the prefix "bo" maps to the xml-namespace "http://schemas.microsoft.com/3dmanufacturing/booleanoperations/2022/06". See [Appendix C. Standard Namespace](#appendix-c-standard-namespace).
+In this extension specification, as an example, the prefix "bo" maps to the xml-namespace "http://schemas.microsoft.com/3dmanufacturing/booleanoperations/2023/07". See [Appendix C. Standard Namespace](#appendix-c-standard-namespace).
 
 ## Language Notes
 
@@ -69,21 +69,25 @@ See [the 3MF Core Specification software conformance](https://github.com/3MFCons
 
 The 3MF Core Specification defines the \<components> element in the \<object> resource as definition of a tree of different objects to form an assembly, with the intent to allow the reuse of model definitions for an efficient encoding. The resultant shape of a \<components> element is the aggregation of each \<component> object element.
 
-This extension defines how to combine different objects into a single object. It is based in Constructive Solid Geometry ([CSG](https://en.wikipedia.org/wiki/Constructive_solid_geometry)).
+The [section 4.1 Meshes in the core specification](https://github.com/3MFConsortium/spec_core/blob/1.3.0/3MF%20Core%20Specification.md#41-meshes). defines a \<mesh> element as a basic object shape which is defined by triangles. 
 
-However, to limit complexity in the consumer, this spec reduces the GCG scope to an ordered sequence of boolean operations (left to right in diagram below).
+This extension defines how to combine different objects into a new type of shape defined as a *booleanshape* object. It is based in Constructive Solid Geometry ([CSG](https://en.wikipedia.org/wiki/Constructive_solid_geometry)).
 
-![CSG binary sequence](images/Csg_sequence.png)
+However, to limit complexity in the consumer, this spec reduces the GCG scope to an ordered concatenation of boolean shapes (left to right in figure 1.1 below).
 
-This document describes a new element \<booleans> in the \<object> elements that specifies a new object type, other than mesh or components. This element is OPTIONAL for producers but MUST be supported by consumers that specify support for the 3MF Boolean Operations Extension.
+##### Figure 1-1: Sequence of booleans operations.
 
-The \<booleans> element defines a sequence of boolean operations to the referenced objects.
+![CSG binary sequence](images/1.1_Csg_sequence.png)
 
-This is a non-backwards compatible change since it declares a different type of object. Therefore, a 3MF package which uses "booleans" objects MUST enlist the 3MF Boolean Operations Extension as “required extension”, as defined in the core specification.
+This document describes a new element \<booleanshape> in the \<object> elements that specifies a new object type, other than a mesh shape or components. This element is OPTIONAL for producers but MUST be supported by consumers that specify support for the 3MF Boolean Operations Extension.
+
+The \<booleanshape> element defines a new object shape referencing a base object to perform boolean operations by the meshes defined in the \<boolean> elements.
+
+This is a non-backwards compatible change since it declares a different type of object. Therefore, a 3MF package which uses *booleanshape* objects MUST enlist the 3MF Boolean Operations Extension as “required extension”, as defined in the core specification.
 
 ##### Figure 1-1: Overview of 3MF Boolean Operations Extension XML structure
 
-![OPC organization](images/1.1.xsd_overview.png)
+![OPC organization](images/1.2.xsd_overview.png)
 
 # Chapter 2. Object Resources
 
@@ -91,15 +95,15 @@ Element \<object>
 
 ![Object](images/2.object.png)
 
-The \<object> element is enhanced with an additional element \<booleans> in the object choice, declaring that the object represents a "boolean operation" instead of mesh or components, extending [the 3MF Core Specification object resources](https://github.com/3MFConsortium/spec_core/blob/1.2.3/3MF%20Core%20Specification.md#chapter-4-object-resources)
+The \<object> element is enhanced with an additional element \<booleanshape> in the object choice, declaring that the object represents a *boolean shape*, instead of a *mesh shape* or *components* defining assemblies, This extends [the 3MF Core Specification object resources](https://github.com/3MFConsortium/spec_core/blob/1.2.3/3MF%20Core%20Specification.md#chapter-4-object-resources)
 
-Similarly as defined in [the 3MF Core Specification object resources](https://github.com/3MFConsortium/spec_core/blob/1.2.3/3MF%20Core%20Specification.md#chapter-4-object-resources), consumers MUST ignore the object type, since the type is always overridden by descendant objects. Producers MUST NOT assign pid or pindex attributes to objects that contain booleans. This ensures that an object with no material will not be split into two representations with different materials due to being referenced as a boolean in multiple objects.
+Similarly as defined in [the 3MF Core Specification object resources](https://github.com/3MFConsortium/spec_core/blob/1.2.3/3MF%20Core%20Specification.md#chapter-4-object-resources), consumers MUST ignore the object type, since the type is always overridden by descendant objects. Producers MUST NOT assign pid or pindex attributes to objects that contain *booleanshape*. This ensures that an object with no material will not be split into two representations with different materials due to being referenced as a boolean in multiple objects.
 
-## 2.1. Booleans
+## 2.1. Boolean Shape
 
-Element \<booleans>
+Element \<booleanshape>
 
-![Boolean Operations](images/2.1.booleans.png)
+![Boolean Shape](images/2.1.booleanshape.png)
 
 | Name   | Type   | Use   | Default   | Annotation |
 | --- | --- | --- | --- | --- |
@@ -109,11 +113,11 @@ Element \<booleans>
 | path | **ST\_Path** | | | A file path to the base object file being referenced. The path is an absolute path from the root of the 3MF container. |
 | @anyAttribute | | | | |
 
-The optional \<booleans> element contains one or more \<boolean> elements to perform an ordered sequence of boolean operation onto the referenced base object.
+The optional \<booleanshape> element contains one or more \<boolean> elements to perform an ordered sequence of boolean operations onto the referenced base object.
 
-**objectid** - Selects the base object to apply the boolean operation. The object MUST be a mesh or another booleans object of type "model". It MUST NOT reference a components object.
+**objectid** - Selects the base object to apply the boolean operation. The object MUST be an object of type "model" defining a shape: mesh, booleanmesh, or shapes defined in other 3MF extensions. It MUST NOT reference a components object.
 
-**operation** - The boolean operation to perform. The options for the boolean operations are the following:
+**operation** - The boolean operation to perform. The options for the boolean shapes are the following:
 
 1.	*union*. The resulting object shape is defined as the merger of the shapes. The resulting object surface property is defined by the property of the surface property defining the outer surface, as defined by [the 3MF Core Specification overlapping order](https://github.com/3MFConsortium/spec_core/blob/1.2.3/3MF%20Core%20Specification.md#412-overlapping-order)
 
@@ -129,7 +133,7 @@ The optional \<booleans> element contains one or more \<boolean> elements to per
 
 **transform** - The transform to apply to the selected base object.
 
-**path** - When used in conjunction with [the 3MF Production extension](https://github.com/3MFConsortium/spec_production/blob/master/3MF%20Production%20Extension.md), the "path" attribute references objects in non-root model files. Path is an absolute path to the target model file inside the 3MF container that contains the target object. The use of the path attribute in a \<booleans> element is ONLY valid in the root model file.
+**path** - When used in conjunction with [the 3MF Production extension](https://github.com/3MFConsortium/spec_production/blob/master/3MF%20Production%20Extension.md), the "path" attribute references objects in non-root model files. Path is an absolute path to the target model file inside the 3MF container that contains the target object. The use of the path attribute in a \<booleanshape> element is ONLY valid in the root model file.
 
 The following diagrams, from the ***CSG*** Wikipedia, show the three operations:
 
@@ -150,7 +154,7 @@ Element \<boolean>
 | path | **ST\_Path** | | | A file path to the model file being referenced. The path is an absolute path from the root of the 3MF container. |
 | @anyAttribute | | | | |
 
-The \<boolean> element selects a pre-defined object resource to perform a boolean operation to the base object referenced in the enclosing \<booleans> element. The boolean operation is applied in the sequence order of the \<boolean> element.
+The \<boolean> element selects a pre-defined object resource to perform a boolean operation to the base object referenced in the enclosing \<booleanshape> element. The boolean operation is applied in the sequence order of the \<boolean> element.
 
 **objectid** - Selects the object with the mesh to apply the boolean operation. The object MUST be only a triangle mesh object of type "model", and MUST NOT contain shapes defined in any other extension. 
 
@@ -158,7 +162,7 @@ The \<boolean> element selects a pre-defined object resource to perform a boolea
 
 **path** - When used in conjunction with [the 3MF Production extension](https://github.com/3MFConsortium/spec_production/blob/master/3MF%20Production%20Extension.md), the "path" attribute references objects in non-root model files. Path is an absolute path to the target model file inside the 3MF container that contains the target object. The use of the path attribute in a \<boolean> element is ONLY valid in the root model file.
 
-The boolean operations are sequentially applied in the order defined by the \<boolean> sequence, and they follow the fill rule conversion defined by [the 3MF Core Specification fill rule](https://github.com/3MFConsortium/spec_core/blob/1.2.3/3MF%20Core%20Specification.md#411-fill-rule).
+The boolean shapes are sequentially applied in the order defined by the \<boolean> sequence, and they follow the fill rule conversion defined by [the 3MF Core Specification fill rule](https://github.com/3MFConsortium/spec_core/blob/1.2.3/3MF%20Core%20Specification.md#411-fill-rule).
 
 # Part II. Appendices
 
@@ -170,9 +174,9 @@ See [the 3MF Core Specification glossary](https://github.com/3MFConsortium/spec_
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns="http://schemas.microsoft.com/3dmanufacturing/booleanoperations/2022/06"
+<xs:schema xmlns="http://schemas.microsoft.com/3dmanufacturing/booleanoperations/2023/07"
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
-  targetNamespace="http://schemas.microsoft.com/3dmanufacturing/booleanoperations/2022/06"
+  targetNamespace="http://schemas.microsoft.com/3dmanufacturing/booleanoperations/2023/07"
   elementFormDefault="unqualified" attributeFormDefault="unqualified" blockDefault="#all">
   <xs:import namespace="http://www.w3.org/XML/1998/namespace"
     schemaLocation="http://www.w3.org/2001/xml.xsd"/>
@@ -191,13 +195,13 @@ See [the 3MF Core Specification glossary](https://github.com/3MFConsortium/spec_
   <xs:complexType name="CT_Object">
     <xs:sequence>
       <xs:choice>
-        <xs:element ref="booleans"/>
+        <xs:element ref="booleanshape"/>
       </xs:choice>
       <xs:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="2147483647"/>
     </xs:sequence>
   </xs:complexType>
-
-  <xs:complexType name="CT_Booleans">
+  
+  <xs:complexType name="CT_BooleanShape">
     <xs:sequence>
       <xs:element ref="boolean" maxOccurs="2147483647"/>
       <xs:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="2147483647"/>
@@ -244,7 +248,7 @@ See [the 3MF Core Specification glossary](https://github.com/3MFConsortium/spec_
   
   <!-- Elements -->
   <xs:element name="object" type="CT_Object"/>
-  <xs:element name="booleans" type="CT_Booleans"/>
+  <xs:element name="booleanshape" type="CT_BooleanShape"/>
   <xs:element name="boolean" type="CT_Boolean"/>
 </xs:schema>
 ```
@@ -253,7 +257,7 @@ See [the 3MF Core Specification glossary](https://github.com/3MFConsortium/spec_
 
 | | |
 | --- | --- |
-| BooleanOperation | [http://schemas.microsoft.com/3dmanufacturing/booleanoperations/2022/06](http://schemas.microsoft.com/3dmanufacturing/booleanoperations/2022/06) |
+| BooleanOperation | [http://schemas.microsoft.com/3dmanufacturing/booleanoperations/2023/07](http://schemas.microsoft.com/3dmanufacturing/booleanoperations/2023/07) |
 
 # Appendix D: Example file
 
@@ -263,7 +267,7 @@ The diagram in [Chapter 1. Overview of Additions](https://github.com/3MFConsorti
 ```xml
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <model xmlns="http://schemas.microsoft.com/3dmanufacturing/core/2015/02"
-	xmlns:bo="http://schemas.microsoft.com/3dmanufacturing/booleanoperations/2022/06"
+	xmlns:bo="http://schemas.microsoft.com/3dmanufacturing/booleanoperations/2023/07"
 	requiredextensions="bo" unit="millimeter" xml:lang="en-US">
     <resources>
         <basematerials id="2">
@@ -290,16 +294,16 @@ The diagram in [Chapter 1. Overview of Additions](https://github.com/3MFConsorti
             </mesh>
         </object>
         <object id="6" type="model" name="Intersected">
-            <bo:booleans objectid="3" operation="intersection" transform="0.0741111 0 0 0 0.0741111 0 0 0 0.0741111 2.91124 -0.400453 1.60607">
+            <bo:booleanshape objectid="3" operation="intersection" transform="0.0741111 0 0 0 0.0741111 0 0 0 0.0741111 2.91124 -0.400453 1.60607">
                 <bo:boolean objectid="4" transform="0.0741111 0 0 0 0.0741111 0 0 0 0.0741111 2.91124 -0.400453 1.60607"/>
-            </bo:booleans>
+            </bo:booleanshape>
         </object>
         <object id="10" type="model" name="Full part">
-            <bo:booleans objectid="6" operation="difference">
+            <bo:booleanshape objectid="6" operation="difference">
                 <bo:boolean objectid="5" transform="0.0271726 0 0 0 0 0.0271726 0 -0.0680034 0 4.15442 3.58836 5.23705" />
                 <bo:boolean objectid="5" transform="0.0272014 0 0 0 0.0272012 0 0 0 0.0680035 4.05357 6.33412 3.71548" />
                 <bo:boolean objectid="5" transform="0 0 -0.0272013 0 0.0272013 0 0.0680032 0 0 5.05103 6.32914 3.35287" />
-            </bo:booleans>
+            </bo:booleanshape>
         </object>
     </resources>
     <build>
