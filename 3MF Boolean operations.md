@@ -115,7 +115,7 @@ Element \<booleanshape>
 
 The optional \<booleanshape> element contains one or more \<boolean> elements to perform an ordered sequence of boolean operations onto the referenced base object.
 
-**objectid** - Selects the base object to apply the boolean operation. The object MUST be an object of type "model" defining a shape: mesh, booleanmesh, or shapes defined in other 3MF extensions. It MUST NOT reference a components object.
+**objectid** - Selects the base object to apply the boolean operation. The object MUST be an object of type "model" defining a shape: mesh, booleanshape, or shapes defined in other 3MF extensions. It MUST NOT reference a components object.
 
 **operation** - The boolean operation to perform. The options for the boolean shapes are the following:
 
