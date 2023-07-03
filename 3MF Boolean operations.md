@@ -73,13 +73,13 @@ The [section 4.1 Meshes in the core specification](https://github.com/3MFConsort
 
 This extension defines how to combine different objects into a new type of shape defined as a *booleanshape* object. It is based in Constructive Solid Geometry ([CSG](https://en.wikipedia.org/wiki/Constructive_solid_geometry)).
 
-However, to limit complexity in the consumer, this spec reduces the GCG scope to an ordered concatenation of boolean shapes (left to right in figure 1.1 below).
+However, to limit complexity in the consumer, this spec reduces the CSG scope to an ordered concatenation of boolean shapes (left to right in figure 1.1 below).
 
-##### Figure 1-1: Sequence of booleans operations.
+##### Figure 1-1: Concatenating booleans operations.
 
 ![CSG binary sequence](images/1.1_Csg_sequence.png)
 
-This document describes a new element \<booleanshape> in the \<object> elements that specifies a new object type, other than a mesh shape or components. This element is OPTIONAL for producers but MUST be supported by consumers that specify support for the 3MF Boolean Operations Extension.
+This document describes a new element \<booleanshape> in the \<object> elements choice that specifies a new object type, other than a mesh shape or components. This element is OPTIONAL for producers but MUST be supported by consumers that specify support for the 3MF Boolean Operations Extension.
 
 The \<booleanshape> element defines a new object shape referencing a base object to perform boolean operations by the meshes defined in the \<boolean> elements.
 
@@ -95,7 +95,7 @@ Element \<object>
 
 ![Object](images/2.object.png)
 
-The \<object> element is enhanced with an additional element \<booleanshape> in the object choice, declaring that the object represents a *boolean shape*, instead of a *mesh shape* or *components* defining assemblies, This extends [the 3MF Core Specification object resources](https://github.com/3MFConsortium/spec_core/blob/1.2.3/3MF%20Core%20Specification.md#chapter-4-object-resources)
+The \<object> element is enhanced with an additional element \<booleanshape> in the object choice, declaring that the object represents a *boolean shape* defining boolean operations, instead of a *mesh shape* or *components* defining assemblies, This extends [the 3MF Core Specification object resources](https://github.com/3MFConsortium/spec_core/blob/1.2.3/3MF%20Core%20Specification.md#chapter-4-object-resources)
 
 Similarly as defined in [the 3MF Core Specification object resources](https://github.com/3MFConsortium/spec_core/blob/1.2.3/3MF%20Core%20Specification.md#chapter-4-object-resources), consumers MUST ignore the object type, since the type is always overridden by descendant objects. Producers MUST NOT assign pid or pindex attributes to objects that contain *booleanshape*. This ensures that an object with no material will not be split into two representations with different materials due to being referenced as a boolean in multiple objects.
 
