@@ -162,7 +162,7 @@ The \<boolean> element selects a pre-defined object resource to perform a boolea
 
 **path** - When used in conjunction with [the 3MF Production extension](https://github.com/3MFConsortium/spec_production/blob/master/3MF%20Production%20Extension.md), the "path" attribute references objects in non-root model files. Path is an absolute path to the target model file inside the 3MF container that contains the target object. The use of the path attribute in a \<boolean> element is ONLY valid in the root model file.
 
-The boolean shapes are sequentially applied in the order defined by the \<boolean> sequence, and they follow the fill rule conversion defined by [the 3MF Core Specification fill rule](https://github.com/3MFConsortium/spec_core/blob/1.2.3/3MF%20Core%20Specification.md#411-fill-rule).
+The boolean operations are sequentially applied in the order defined by the \<boolean> sequence, and they follow the fill rule conversion defined by [the 3MF Core Specification fill rule](https://github.com/3MFConsortium/spec_core/blob/1.2.3/3MF%20Core%20Specification.md#411-fill-rule).
 
 # Part II. Appendices
 
