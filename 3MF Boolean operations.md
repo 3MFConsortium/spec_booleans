@@ -97,7 +97,7 @@ Element \<object>
 
 The \<object> element is enhanced with an additional element \<booleanshape> in the object choice, declaring that the object represents a *boolean shape* defining boolean operations, instead of a *mesh shape* or *components* defining assemblies, This extends [the 3MF Core Specification object resources](https://github.com/3MFConsortium/spec_core/blob/1.2.3/3MF%20Core%20Specification.md#chapter-4-object-resources)
 
-Similarly as defined in [the 3MF Core Specification object resources](https://github.com/3MFConsortium/spec_core/blob/1.2.3/3MF%20Core%20Specification.md#chapter-4-object-resources), consumers MUST ignore the object type, since the type is always overridden by descendant objects. Producers MUST NOT assign pid or pindex attributes to objects that contain *booleanshape*. This ensures that an object with no material will not be split into two representations with different materials due to being referenced as a boolean in multiple objects.
+Similarly as defined in [the 3MF Core Specification object resources](https://github.com/3MFConsortium/spec_core/blob/1.2.3/3MF%20Core%20Specification.md#chapter-4-object-resources), producers MUST NOT assign pid or pindex attributes to objects that contain *booleanshape*. This ensures that an object with no material will not be split into two representations with different materials due to being referenced as a boolean in multiple objects.
 
 ## 2.1. Boolean Shape
 
