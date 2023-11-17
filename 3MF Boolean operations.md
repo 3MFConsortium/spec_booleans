@@ -13,9 +13,9 @@
 
 
 
-| **Version** | 0.9.0 |
+| **Version** | 1.0.0 |
 | --- | --- |
-| **Status** | Draft |
+| **Status** | Published |
 
 ## Table of Contents
 
