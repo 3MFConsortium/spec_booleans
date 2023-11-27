@@ -40,6 +40,8 @@ sed -i 's|<a href="@|<a href="#|g' "$TMPFILE"
 sed -i 's|<pre|<code style="white-space: pre-wrap; page-break-inside: avoid !important; display: block;"|g' "$TMPFILE"
 sed -i 's|</pre|</code|g' "$TMPFILE"
 sed -i "/Page tweaks/ a 	* {		font-size: large;	}" "$TMPFILE"
+sed -i 's|margin-top: 64px;|margin-top: 64px; margin-right: 21px;|g' "$TMPFILE"
+sed -i 's|margin-bottom: 21px;|margin-bottom: 21px; margin-left: 21px;|g' "$TMPFILE"
 
 MARGIN=14
 
