@@ -10,7 +10,7 @@ jobs:
   build-linux:
     runs-on: ubuntu-20.04
     env:
-      SPECNAME: "3MF Boolean Operations"
+      SPECNAME: "3MF Boolean operations"
     steps:
       - uses: actions/checkout@v2
         with:
