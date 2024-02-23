@@ -13,9 +13,9 @@
 
 
 
-| **Version** | 1.0.0 |
+| **Version** | 1.1.0 |
 | --- | --- |
-| **Status** | Published |
+| **Status** | Draft |
 
 ## Disclaimer
 
@@ -57,7 +57,7 @@ This extension MUST be used only with Core specification 1.x.
 
 See [the 3MF Core Specification conventions](https://github.com/3MFConsortium/spec_core/blob/1.3.0/3MF%20Core%20Specification.md#document-conventions).
 
-In this extension specification, as an example, the prefix "bo" maps to the xml-namespace "http://schemas.microsoft.com/3dmanufacturing/booleanoperations/2023/07". See [Appendix C. Standard Namespace](#appendix-c-standard-namespace).
+In this extension specification, as an example, the prefix "bo" maps to the xml-namespace "http://schemas.3mf.io/3dmanufacturing/booleanoperations/2024/02". See [Appendix C. Standard Namespace](#appendix-c-standard-namespace).
 
 ## Language Notes
 
@@ -178,9 +178,9 @@ See [the 3MF Core Specification glossary](https://github.com/3MFConsortium/spec_
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns="http://schemas.microsoft.com/3dmanufacturing/booleanoperations/2023/07"
+<xs:schema xmlns="http://schemas.3mf.io/3dmanufacturing/booleanoperations/2024/02"
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
-  targetNamespace="http://schemas.microsoft.com/3dmanufacturing/booleanoperations/2023/07"
+  targetNamespace="http://schemas.3mf.io/3dmanufacturing/booleanoperations/2024/02"
   elementFormDefault="unqualified" attributeFormDefault="unqualified" blockDefault="#all">
   <xs:import namespace="http://www.w3.org/XML/1998/namespace"
     schemaLocation="http://www.w3.org/2001/xml.xsd"/>
@@ -261,7 +261,7 @@ See [the 3MF Core Specification glossary](https://github.com/3MFConsortium/spec_
 
 | | |
 | --- | --- |
-| BooleanOperation | [http://schemas.microsoft.com/3dmanufacturing/booleanoperations/2023/07](http://schemas.microsoft.com/3dmanufacturing/booleanoperations/2023/07) |
+| BooleanOperation | [http://schemas.3mf.io/3dmanufacturing/booleanoperations/2024/02](http://schemas.3mf.io/3dmanufacturing/booleanoperations/2024/02) |
 
 # Appendix D: Example file
 
@@ -271,7 +271,7 @@ The diagram in [Chapter 1. Overview of Additions](https://github.com/3MFConsorti
 ```xml
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <model xmlns="http://schemas.microsoft.com/3dmanufacturing/core/2015/02"
-	xmlns:bo="http://schemas.microsoft.com/3dmanufacturing/booleanoperations/2023/07"
+	xmlns:bo="http://schemas.3mf.io/3dmanufacturing/booleanoperations/2024/02"
 	requiredextensions="bo" unit="millimeter" xml:lang="en-US">
     <resources>
         <basematerials id="2">
