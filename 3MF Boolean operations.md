@@ -318,6 +318,10 @@ The diagram in [Chapter 1. Overview of Additions](https://github.com/3MFConsorti
 
 # References
 
-**CSG** Wikipedia, the free encyclopedia: [Constructive solid geometry](https://en.wikipedia.org/wiki/Constructive_solid_geometry)
+**CSG**
 
-See the [3MF Core Specification references](https://github.com/3MFConsortium/spec_core/blob/1.3.0/3MF%20Core%20Specification.md#references) for additional references.
+Wikipedia, the free encyclopedia: Constructive solid geometry https://en.wikipedia.org/wiki/Constructive_solid_geometry
+
+**3MF Core Specification references**
+
+See the 3MF Core Specification references https://github.com/3MFConsortium/spec_core/blob/1.2.3/3MF%20Core%20Specification.md#references.
