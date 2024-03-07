@@ -119,7 +119,7 @@ Element \<booleanshape>
 
 The optional \<booleanshape> element contains one or more \<boolean> elements to perform an ordered sequence of boolean operations onto the referenced base object.
 
-**objectid** - Selects the base object to apply the boolean operation. The object MUST be an object of type "model" defining a shape: mesh, booleanshape, or shapes defined in other 3MF extensions. It MUST NOT reference a components object.
+**objectid** - Selects the base object to apply the boolean operation. The object MUST be an object of type "model" defining a shape: mesh, booleanshape, or shapes defined in other 3MF extensions. It MUST NOT reference a components object. When used in combination with [the 3MF Production extension](https://github.com/3MFConsortium/spec_production/blob/master/3MF%20Production%20Extension.md), it MUST NOT reference any object containing Alternatives.
 
 **operation** - The boolean operation to perform. The options for the boolean shapes are the following:
 
@@ -160,7 +160,7 @@ Element \<boolean>
 
 The \<boolean> element selects a pre-defined object resource to perform a boolean operation to the base object referenced in the enclosing \<booleanshape> element. The boolean operation is applied in the sequence order of the \<boolean> element.
 
-**objectid** - Selects the object with the mesh to apply the boolean operation. The object MUST be only a triangle mesh object of type "model", and MUST NOT contain shapes defined in any other extension. 
+**objectid** - Selects the object with the mesh to apply the boolean operation. The object MUST be only a triangle mesh object of type "model", and MUST NOT contain shapes defined in any other extension. When used in combination with [the 3MF Production extension](https://github.com/3MFConsortium/spec_production/blob/master/3MF%20Production%20Extension.md), it MUST NOT reference any object containing Alternatives.
 
 **transform** - The transform to apply to the selected object before the boolean operation.
 
