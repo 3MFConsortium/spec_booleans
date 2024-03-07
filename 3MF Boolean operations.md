@@ -13,7 +13,7 @@
 
 
 
-| **Version** | 1.0.0 |
+| **Version** | 1.1.0 |
 | --- | --- |
 | **Status** | Published |
 
@@ -57,7 +57,7 @@ This extension MUST be used only with Core specification 1.x.
 
 See [the 3MF Core Specification conventions](https://github.com/3MFConsortium/spec_core/blob/1.3.0/3MF%20Core%20Specification.md#document-conventions).
 
-In this extension specification, as an example, the prefix "bo" maps to the xml-namespace "http://schemas.microsoft.com/3dmanufacturing/booleanoperations/2023/07". See [Appendix C. Standard Namespace](#appendix-c-standard-namespace).
+In this extension specification, as an example, the prefix "bo" maps to the xml-namespace "http://schemas.3mf.io/3dmanufacturing/booleanoperations/2023/07". See [Appendix C. Standard Namespace](#appendix-c-standard-namespace).
 
 ## Language Notes
 
@@ -119,7 +119,7 @@ Element \<booleanshape>
 
 The optional \<booleanshape> element contains one or more \<boolean> elements to perform an ordered sequence of boolean operations onto the referenced base object.
 
-**objectid** - Selects the base object to apply the boolean operation. The object MUST be an object of type "model" defining a shape: mesh, booleanshape, or shapes defined in other 3MF extensions. It MUST NOT reference a components object.
+**objectid** - Selects the base object to apply the boolean operation. The object MUST be an object of type "model" defining a shape: mesh, booleanshape, or shapes defined in other 3MF extensions. It MUST NOT reference a components object. When used in combination with [the 3MF Production extension](https://github.com/3MFConsortium/spec_production/blob/master/3MF%20Production%20Extension.md), it MUST NOT reference any object containing Alternatives.
 
 **operation** - The boolean operation to perform. The options for the boolean shapes are the following:
 
@@ -160,7 +160,7 @@ Element \<boolean>
 
 The \<boolean> element selects a pre-defined object resource to perform a boolean operation to the base object referenced in the enclosing \<booleanshape> element. The boolean operation is applied in the sequence order of the \<boolean> element.
 
-**objectid** - Selects the object with the mesh to apply the boolean operation. The object MUST be only a triangle mesh object of type "model", and MUST NOT contain shapes defined in any other extension. 
+**objectid** - Selects the object with the mesh to apply the boolean operation. The object MUST be only a triangle mesh object of type "model", and MUST NOT contain shapes defined in any other extension. When used in combination with [the 3MF Production extension](https://github.com/3MFConsortium/spec_production/blob/master/3MF%20Production%20Extension.md), it MUST NOT reference any object containing Alternatives.
 
 **transform** - The transform to apply to the selected object before the boolean operation.
 
@@ -178,9 +178,9 @@ See [the 3MF Core Specification glossary](https://github.com/3MFConsortium/spec_
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns="http://schemas.microsoft.com/3dmanufacturing/booleanoperations/2023/07"
+<xs:schema xmlns="http://schemas.3mf.io/3dmanufacturing/booleanoperations/2023/07"
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
-  targetNamespace="http://schemas.microsoft.com/3dmanufacturing/booleanoperations/2023/07"
+  targetNamespace="http://schemas.3mf.io/3dmanufacturing/booleanoperations/2023/07"
   elementFormDefault="unqualified" attributeFormDefault="unqualified" blockDefault="#all">
   <xs:import namespace="http://www.w3.org/XML/1998/namespace"
     schemaLocation="http://www.w3.org/2001/xml.xsd"/>
@@ -261,7 +261,7 @@ See [the 3MF Core Specification glossary](https://github.com/3MFConsortium/spec_
 
 | | |
 | --- | --- |
-| BooleanOperation | [http://schemas.microsoft.com/3dmanufacturing/booleanoperations/2023/07](http://schemas.microsoft.com/3dmanufacturing/booleanoperations/2023/07) |
+| BooleanOperation | [http://schemas.3mf.io/3dmanufacturing/booleanoperations/2023/07](http://schemas.3mf.io/3dmanufacturing/booleanoperations/2023/07) |
 
 # Appendix D: Example file
 
@@ -271,7 +271,7 @@ The diagram in [Chapter 1. Overview of Additions](https://github.com/3MFConsorti
 ```xml
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <model xmlns="http://schemas.microsoft.com/3dmanufacturing/core/2015/02"
-	xmlns:bo="http://schemas.microsoft.com/3dmanufacturing/booleanoperations/2023/07"
+	xmlns:bo="http://schemas.3mf.io/3dmanufacturing/booleanoperations/2023/07"
 	requiredextensions="bo" unit="millimeter" xml:lang="en-US">
     <resources>
         <basematerials id="2">
@@ -318,6 +318,10 @@ The diagram in [Chapter 1. Overview of Additions](https://github.com/3MFConsorti
 
 # References
 
-**CSG** Wikipedia, the free encyclopedia: [Constructive solid geometry](https://en.wikipedia.org/wiki/Constructive_solid_geometry)
+**CSG**
 
-See the [3MF Core Specification references](https://github.com/3MFConsortium/spec_core/blob/1.3.0/3MF%20Core%20Specification.md#references) for additional references.
+Wikipedia, the free encyclopedia: Constructive solid geometry https://en.wikipedia.org/wiki/Constructive_solid_geometry
+
+**3MF Core Specification references**
+
+See the 3MF Core Specification references https://github.com/3MFConsortium/spec_core/blob/1.2.3/3MF%20Core%20Specification.md#references.
