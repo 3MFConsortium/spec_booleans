@@ -79,7 +79,7 @@ The primary goal of the 3MF Boolean extension is to create new model shapes with
 
 * Labelling a base object with a mesh representation of the label shape.
 
-* Repeated patterns defined by meshes applied into a base model, for example repeated perforations.
+* Repeated patterns defined by meshes applied into a base model. For example, repeated perforations.
 
 This extension defines how to combine different objects into a new type of shape defined as a *booleanshape* object. It defines a simple mechanism to concatenate a series of boolean oparations (left to right in figure 1.1 below) into a base model.
 
