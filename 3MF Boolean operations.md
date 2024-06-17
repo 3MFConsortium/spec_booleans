@@ -13,9 +13,9 @@
 
 
 
-| **Version** | 1.1.0 |
+| **Version** | 1.2.0 |
 | --- | --- |
-| **Status** | Published |
+| **Status** | Draft |
 
 ## Disclaimer
 
@@ -75,13 +75,17 @@ The 3MF Core Specification defines the \<components> element in the \<object> re
 
 The [section 4.1 Meshes in the core specification](https://github.com/3MFConsortium/spec_core/blob/1.3.0/3MF%20Core%20Specification.md#41-meshes). defines a \<mesh> element as a basic object shape which is defined by triangles. 
 
-This extension defines how to combine different objects into a new type of shape defined as a *booleanshape* object. It is based in Constructive Solid Geometry ([CSG](https://en.wikipedia.org/wiki/Constructive_solid_geometry)).
+The primary goal of the 3MF Boolean extension is to create new model shapes with customized copies of a base model, with an efficient encoding. Two main applications, but not restricted to:
 
-However, to limit complexity in the consumer, this spec reduces the CSG scope to an ordered concatenation of boolean shapes (left to right in figure 1.1 below).
+* Labelling a base object with a mesh representation of the label shape.
+
+* Repeated patterns defined by meshes applied into a base model, for example repeated perforations.
+
+This extension defines how to combine different objects into a new type of shape defined as a *booleanshape* object. It defines a simple mechanism to concatenate a series of boolean oparations (left to right in figure 1.1 below) into a base model.
 
 ##### Figure 1-1: Concatenating booleans operations.
 
-![CSG binary sequence](images/1.1_Csg_sequence.png)
+![Boolean sequence](images/1.1_boolean_sequence.png)
 
 This document describes a new element \<booleanshape> in the \<object> elements choice that specifies a new object type, other than a mesh shape or components. This element is OPTIONAL for producers but MUST be supported by consumers that specify support for the 3MF Boolean Operations Extension.
 
@@ -139,7 +143,7 @@ The optional \<booleanshape> element contains one or more \<boolean> elements to
 
 **path** - When used in conjunction with [the 3MF Production extension](https://github.com/3MFConsortium/spec_production/blob/master/3MF%20Production%20Extension.md), the "path" attribute references objects in non-root model files. Path is an absolute path to the target model file inside the 3MF container that contains the target object. The use of the path attribute in a \<booleanshape> element is ONLY valid in the root model file.
 
-The following diagrams, from the ***CSG*** Wikipedia, show the three operations:
+The following diagrams show the three boolean operations defined in this specification:
 
 | ![operation = union](images/Boolean_union.png) | ![operation = difference](images/Boolean_difference.png) | ![operation = intersection](images/Boolean_intersect.png) |
 | :---: | :---: | :---: |
