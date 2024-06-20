@@ -75,11 +75,13 @@ The 3MF Core Specification defines the \<components> element in the \<object> re
 
 The [section 4.1 Meshes in the core specification](https://github.com/3MFConsortium/spec_core/blob/1.3.0/3MF%20Core%20Specification.md#41-meshes). defines a \<mesh> element as a basic object shape which is defined by triangles. 
 
-The primary goal of the 3MF Boolean extension is to create new model shapes with customized copies of a base model, with an efficient encoding. Two main applications, but not restricted to:
+The primary goal of the 3MF Boolean extension is to create new model shapes with customized copies of a base model, with an efficient encoding.
 
-* Labelling a base object with a mesh representation of the label shape.
+Two target use cases, but not restricted to:
 
-* Repeated patterns defined by meshes applied into a base model. For example, repeated perforations.
+*	Multiple labelling copies of a base object by a mesh representation of a label shape.
+*	Repeated patterns defined by meshes applied into a base model. For example, repeated perforations.
+
 
 This extension defines how to combine different objects into a new type of shape defined as a *booleanshape* object. It defines a simple mechanism to concatenate a series of boolean oparations (left to right in figure 1.1 below) into a base model.
 
