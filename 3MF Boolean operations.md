@@ -71,11 +71,11 @@ See [the 3MF Core Specification software conformance](https://github.com/3MFCons
 
 # Chapter 1. Overview of Additions
 
-The 3MF Core Specification defines the \<components> element in the \<object> resource as definition of a tree of different objects to form an assembly, with the intent to allow the reuse of model definitions for an efficient encoding. The resultant shape of a \<components> element is the aggregation of each \<component> object element.
+The 3MF Core Specification defines the \<components> element in the \<object> resource as definition of a tree of different objects to form an assembly, with the intent to allow the reuse of object definitions for an efficient encoding. The resultant shape of a \<components> element is the aggregation of each \<component> object element.
 
 The [section 4.1 Meshes in the core specification](https://github.com/3MFConsortium/spec_core/blob/1.3.0/3MF%20Core%20Specification.md#41-meshes). defines a \<mesh> element as a basic object shape which is defined by triangles. 
 
-The primary goal of the 3MF Boolean extension is to create new model shapes with customized copies of a base model, with an efficient encoding.
+The primary goal of this Boolean extension is to create new model object shapes by applying a sequence of boolean operations (union, subtract and intersect) with mesh objects to a referenced base object.
 
 Two target use cases, but not restricted to:
 
