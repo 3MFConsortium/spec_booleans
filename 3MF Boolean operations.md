@@ -145,7 +145,7 @@ The optional \<booleanshape> element contains one or more \<boolean> elements to
 
 **path** - When used in conjunction with [the 3MF Production extension](https://github.com/3MFConsortium/spec_production/blob/master/3MF%20Production%20Extension.md), the "path" attribute references objects in non-root model files. Path is an absolute path to the target model file inside the 3MF container that contains the target object. The use of the path attribute in a \<booleanshape> element is ONLY valid in the root model file.
 
-The following diagrams show the three boolean operations defined in this specification:
+The following diagrams from the ***CSG*** Wikipedia, show the three boolean operations defined in this specification:
 
 | ![operation = union](images/Boolean_union.png) | ![operation = difference](images/Boolean_difference.png) | ![operation = intersection](images/Boolean_intersect.png) |
 | :---: | :---: | :---: |
