@@ -91,7 +91,7 @@ This extension defines how to combine different objects into a new type of shape
 
 This document describes a new element \<booleanshape> in the \<object> elements choice that specifies a new object type, other than a mesh shape or components. This element is OPTIONAL for producers but MUST be supported by consumers that specify support for the 3MF Boolean Operations Extension.
 
-The \<booleanshape> element defines a new object shape referencing a base object to perform boolean operations by the meshes defined in the \<boolean> elements.
+The \<booleanshape> element defines a new object shape referencing a base object to perform boolean operations by the shapes refernced by the \<boolean> elements.
 
 This is a non-backwards compatible change since it declares a different type of object. Therefore, a 3MF package which uses *booleanshape* objects MUST enlist the 3MF Boolean Operations Extension as “required extension”, as defined in the core specification.
 
@@ -129,7 +129,7 @@ The optional \<booleanshape> element contains one or more \<boolean> elements to
 
 **operation** - The boolean operation to perform. The options for the boolean shapes are the following:
 
-1.	*union*. The resulting object shape is defined as the merger of the shapes. The resulting object surface property is defined by the property of the surface property defining the outer surface. The material and the volumetric properties in the overlapped volume are defined by the ones in last overlapping object in that volume. See [the 3MF Core Specification overlapping order](https://github.com/3MFConsortium/spec_core/blob/1.2.3/3MF%20Core%20Specification.md#412-overlapping-order)
+1.	*union*. The resulting object shape is defined as the merger of the shapes. The resulting object surface property is defined by the property of the surface property defining the outer surface. The material and the volumetric properties in the overlapped volume are defined by the ones in last overlapping object in that volume.
 
     union(base,a,b,c) = base Ս (a Ս b Ս c) = ((base Ս a) Ս b) Ս c
 
@@ -166,7 +166,7 @@ Element \<boolean>
 
 The \<boolean> element selects a pre-defined object resource to perform a boolean operation to the base object referenced in the enclosing \<booleanshape> element. The boolean operation is applied in the sequence order of the \<boolean> element.
 
-**objectid** - Selects the object with the mesh to apply the boolean operation. The object MUST be only a triangle mesh object of type "model", and MUST NOT contain shapes defined in any other extension. When used in combination with [the 3MF Production extension](https://github.com/3MFConsortium/spec_production/blob/master/3MF%20Production%20Extension.md), it MUST NOT reference any object containing Alternatives.
+**objectid** - Selects the object applying the boolean operation. The object MUST be an object of type "model" defining a shape: mesh, or shapes defined in other 3MF extensions. But it MUST NOT be defined by object combining other objects as _components_ or another _booleanshape_. When used in combination with [the 3MF Production extension](https://github.com/3MFConsortium/spec_production/blob/master/3MF%20Production%20Extension.md), it MUST NOT reference any object containing Alternatives.
 
 **transform** - The transform to apply to the selected object before the boolean operation.
 
