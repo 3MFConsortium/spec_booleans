@@ -83,7 +83,7 @@ Two target use cases, but not restricted to:
 *	Repeated patterns defined by meshes applied into a base model. For example, repeated perforations.
 
 
-This extension defines how to combine different objects into a new type of shape defined as a *booleanshape* object. It defines a simple mechanism to concatenate a series of boolean oparations (left to right in figure 1.1 below) into a base model.
+This extension defines how to combine different objects into a new type of shape defined as a *booleanshape* object. It defines a simple mechanism to concatenate a series of boolean operations (left to right in figure 1.1 below) into a base model.
 
 ##### Figure 1-1: Concatenating booleans operations.
 
@@ -129,7 +129,7 @@ The optional \<booleanshape> element contains one or more \<boolean> elements to
 
 **operation** - The boolean operation to perform. The options for the boolean shapes are the following:
 
-1.	*union*. The resulting object shape is defined as the merger of the shapes. The resulting object surface property is defined by the property of the surface property defining the outer surface. The material and the volumetric properties in the overlapped volume are defined by the ones in last overlapping object in that volume.
+1.	*union*. The resulting object shape is defined as the merger of the shapes. The resulting object surface property is defined by the property of the surface property defining the outer surface. The material and the volumetric properties in the overlapped volume are defined by the ones in last overlapping object in that volume, or none if last overlapping object has no volumetric property or material defined. 
 
     union(base,a,b,c) = base Ս (a Ս b Ս c) = ((base Ս a) Ս b) Ս c
 
