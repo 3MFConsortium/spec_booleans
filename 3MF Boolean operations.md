@@ -129,7 +129,7 @@ The optional \<booleanshape> element contains one or more \<boolean> elements to
 
 **operation** - The boolean operation to perform. The options for the boolean shapes are the following:
 
-1.	*union*. The resulting object shape is defined as the merger of the shapes. The resulting object surface property is defined by the property of the surface property defining the outer surface. The material and the volumetric properties in the overlapped volume are defined by the ones in last overlapping object in that volume, or none if last overlapping object has no volumetric property or material defined. 
+1.	*union*. The resulting object shape is defined as the merger of the shapes. The resulting object surface property is defined by the property of the surface property defining the outer surface. The material and the volumetric properties in the overlapped volume are defined by the ones in last overlapping object in that volume, or none if last overlapping object has no matrerial or volumetric property defined. 
 
     union(base,a,b,c) = base Ս (a Ս b Ս c) = ((base Ս a) Ս b) Ս c
 
@@ -166,7 +166,7 @@ Element \<boolean>
 
 The \<boolean> element selects a pre-defined object resource to perform a boolean operation to the base object referenced in the enclosing \<booleanshape> element. The boolean operation is applied in the sequence order of the \<boolean> element.
 
-**objectid** - Selects the object applying the boolean operation. The object MUST be an object of type "model" defining a shape: mesh, or shapes defined in other 3MF extensions. But it MUST NOT be defined by object combining other objects as _components_ or another _booleanshape_. When used in combination with [the 3MF Production extension](https://github.com/3MFConsortium/spec_production/blob/master/3MF%20Production%20Extension.md), it MUST NOT reference any object containing Alternatives.
+**objectid** - Selects the object applying the boolean operation. The object MUST be an object of type "model" defining a shape: mesh, or shapes defined in other 3MF extensions. But it MUST NOT s elect any object combining other objects as _components_ or another _booleanshape_. When used in combination with [the 3MF Production extension](https://github.com/3MFConsortium/spec_production/blob/master/3MF%20Production%20Extension.md), it MUST NOT reference any object containing Alternatives.
 
 **transform** - The transform to apply to the selected object before the boolean operation.
 
