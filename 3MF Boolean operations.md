@@ -91,7 +91,7 @@ This extension defines how to combine different objects into a new type of shape
 
 This document describes a new element \<booleanshape> in the \<object> elements choice that specifies a new object type, other than a mesh shape or components. This element is OPTIONAL for producers but MUST be supported by consumers that specify support for the 3MF Boolean Operations Extension.
 
-The \<booleanshape> element defines a new object shape referencing a base object to perform boolean operations by the shapes refernced by the \<boolean> elements.
+The \<booleanshape> element defines a new object shape referencing a base object to perform boolean operations by the shapes referenced by the \<boolean> elements.
 
 This is a non-backwards compatible change since it declares a different type of object. Therefore, a 3MF package which uses *booleanshape* objects MUST enlist the 3MF Boolean Operations Extension as “required extension”, as defined in the core specification.
 
