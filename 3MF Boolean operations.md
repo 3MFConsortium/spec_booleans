@@ -75,7 +75,7 @@ The 3MF Core Specification defines the \<components> element in the \<object> re
 
 The [section 4.1 Meshes in the core specification](https://github.com/3MFConsortium/spec_core/blob/1.3.0/3MF%20Core%20Specification.md#41-meshes). defines a \<mesh> element as a basic object shape which is defined by triangles. 
 
-The primary goal of this Boolean extension is to create new model object shapes by applying a sequence of boolean operations (union, subtract and intersect) with mesh objects to a base object.
+The primary goal of this Boolean extension is to create new model object shapes by applying a sequence of boolean operations (union, difference and intersection) with mesh objects to a base object.
 
 Two target use cases, but not restricted to:
 
