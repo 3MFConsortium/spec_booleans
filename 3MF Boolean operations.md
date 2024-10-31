@@ -85,7 +85,7 @@ Two target use cases, but not restricted to:
 
 This extension defines how to combine different objects into a new type of shape defined as a *booleanshape* object. It defines a simple mechanism to concatenate a series of boolean operations (left to right in figure 1.1 below) into a base model.
 
-##### Figure 1-1: Concatenating booleans operations.
+##### Figure 1-1: Concatenating boolean operations.
 
 ![Boolean sequence](images/1.1_boolean_sequence.png)
 
@@ -129,7 +129,7 @@ The optional \<booleanshape> element contains one or more \<boolean> elements to
 
 **operation** - The boolean operation to perform. The options for the boolean shapes are the following:
 
-1.	*union*. The resulting object shape is defined as the merger of the shapes. The resulting object surface property is defined by the property of the surface property defining the outer surface, as defined by [the 3MF Core Specification overlapping order](https://github.com/3MFConsortium/spec_core/blob/1.2.3/3MF%20Core%20Specification.md#412-overlapping-order). The material and the volumetric properties in the overlapped volume are defined by the ones in last overlapping object in that volume, or none if last overlapping object has no matrerial or volumetric property defined. 
+1.	*union*. The resulting object shape is defined as the merger of the shapes. The resulting object surface property is defined by the property of the surface property defining the outer surface, as defined by [the 3MF Core Specification overlapping order](https://github.com/3MFConsortium/spec_core/blob/1.2.3/3MF%20Core%20Specification.md#412-overlapping-order). The material and the volumetric properties in the overlapped volume are defined by the ones in last overlapping object in that volume, or none if last overlapping object has no material or volumetric property defined. 
 
     union(base,a,b,c) = base Ս (a Ս b Ս c) = ((base Ս a) Ս b) Ս c
 
