@@ -23,6 +23,7 @@ THESE MATERIALS ARE PROVIDED "AS IS." The contributors expressly disclaim any wa
 
 ## Table of Contents
 
+- [Change history](#change-history)
 - [Preface](#preface)
   * [About this Specification](#about-this-specification)
   * [Document Conventions](#document-conventions)
@@ -38,6 +39,14 @@ THESE MATERIALS ARE PROVIDED "AS IS." The contributors expressly disclaim any wa
   * [Appendix C. Standard Namespace](#appendix-c-standard-namespace)
   * [Appendix D: Example file](#appendix-d-example-file)
 - [References](#references)
+
+## Change History
+
+| **Version** | **Changes Description** | **Date** |
+| --- | --- | --- |
+| 1.0.0 | First published version | 11/27/2023 |
+| 1.1.0 | Rename namespace to 3mf.io and clarifications | 3/12/2024 |
+| 1.1.1 | Clarify scope in overview. Material and volumetric properties. Boolean operand on non-triangle meshes  |  |
 
 # Preface
 
