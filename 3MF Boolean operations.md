@@ -175,7 +175,7 @@ Element \<boolean>
 
 The \<boolean> element selects a pre-defined object resource to perform a boolean operation to the base object referenced in the enclosing \<booleanshape> element. The boolean operation is applied in the sequence order of the \<boolean> element.
 
-**objectid** - Selects the object applying the boolean operation. The object MUST be an object of type "model" defining a shape: mesh, or shapes defined in other 3MF extensions. But it MUST NOT s elect any object combining other objects as _components_ or another _booleanshape_. When used in combination with [the 3MF Production extension](https://github.com/3MFConsortium/spec_production/blob/master/3MF%20Production%20Extension.md), it MUST NOT reference any object containing Alternatives.
+**objectid** - Selects the object applying the boolean operation. The object MUST be an object of type "model" defining a shape: mesh, or shapes defined in other 3MF extensions. But it MUST NOT select any object combining other objects as _components_ or another _booleanshape_. When used in combination with [the 3MF Production extension](https://github.com/3MFConsortium/spec_production/blob/master/3MF%20Production%20Extension.md), it MUST NOT reference any object containing Alternatives.
 
 **transform** - The transform to apply to the selected object before the boolean operation.
 
