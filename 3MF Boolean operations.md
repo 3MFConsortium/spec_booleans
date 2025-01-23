@@ -13,7 +13,7 @@
 
 
 
-| **Version** | 1.1.1 |
+| **Version** | 1.2.0 |
 | --- | --- |
 | **Status** | Draft |
 
@@ -44,9 +44,9 @@ THESE MATERIALS ARE PROVIDED "AS IS." The contributors expressly disclaim any wa
 
 | **Version** | **Changes Description** | **Date** |
 | --- | --- | --- |
-| 1.0.0 | First published version | 11/27/2023 |
-| 1.1.0 | Rename namespace to 3mf.io and clarifications | 3/12/2024 |
-| 1.1.1 | Clarify scope in overview. Material and volumetric properties. Boolean operand on non-triangle meshes  |  |
+| 1.0.0 | First published version | November 27, 2023 |
+| 1.1.0 | Rename namespace to 3mf.io and clarifications | March 12, 2024 |
+| 1.2.0 | Clarify scope in overview. Material and volumetric properties. Boolean operand on non-triangle meshes  |  |
 
 # Preface
 
