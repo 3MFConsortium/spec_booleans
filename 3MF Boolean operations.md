@@ -64,17 +64,17 @@ This extension MUST be used only with Core specification 1.x.
 
 ## Document Conventions
 
-See [the 3MF Core Specification conventions](https://github.com/3MFConsortium/spec_core/blob/1.3.0/3MF%20Core%20Specification.md#document-conventions).
+See [the 3MF Core Specification conventions](https://github.com/3MFConsortium/spec_core/blob/1.4.0/3MF%20Core%20Specification.md#document-conventions).
 
 In this extension specification, as an example, the prefix "bo" maps to the xml-namespace "http://schemas.3mf.io/3dmanufacturing/booleanoperations/2023/07". See [Appendix C. Standard Namespace](#appendix-c-standard-namespace).
 
 ## Language Notes
 
-See [the 3MF Core Specification language notes](https://github.com/3MFConsortium/spec_core/blob/1.3.0/3MF%20Core%20Specification.md#language-notes).
+See [the 3MF Core Specification language notes](https://github.com/3MFConsortium/spec_core/blob/1.4.0/3MF%20Core%20Specification.md#language-notes).
 
 ## Software Conformance
 
-See [the 3MF Core Specification software conformance](https://github.com/3MFConsortium/spec_core/blob/1.3.0/3MF%20Core%20Specification.md#software-conformance).
+See [the 3MF Core Specification software conformance](https://github.com/3MFConsortium/spec_core/blob/1.4.0/3MF%20Core%20Specification.md#software-conformance).
 
 # Part I: 3MF Documents
 
@@ -82,7 +82,7 @@ See [the 3MF Core Specification software conformance](https://github.com/3MFCons
 
 The 3MF Core Specification defines the \<components> element in the \<object> resource as definition of a tree of different objects to form an assembly, with the intent to allow the reuse of object definitions for an efficient encoding. The resultant shape of a \<components> element is the aggregation of each \<component> object element.
 
-The [section 4.1 Meshes in the core specification](https://github.com/3MFConsortium/spec_core/blob/1.3.0/3MF%20Core%20Specification.md#41-meshes). defines a \<mesh> element as a basic object shape which is defined by triangles. 
+The [section 4.1 Meshes in the core specification](https://github.com/3MFConsortium/spec_core/blob/1.4.0/3MF%20Core%20Specification.md#41-meshes). defines a \<mesh> element as a basic object shape which is defined by triangles. 
 
 The primary goal of this Boolean extension is to create new model object shapes by applying a sequence of boolean operations (union, difference and intersection) with mesh objects to a base object.
 
@@ -187,7 +187,7 @@ The boolean operations are sequentially applied in the order defined by the \<bo
 
 ## Appendix A. Glossary
 
-See [the 3MF Core Specification glossary](https://github.com/3MFConsortium/spec_core/blob/1.3.0/3MF%20Core%20Specification.md#appendix-a-glossary).
+See [the 3MF Core Specification glossary](https://github.com/3MFConsortium/spec_core/blob/1.4.0/3MF%20Core%20Specification.md#appendix-a-glossary).
 
 ## Appendix B. 3MF XSD Schema
 
