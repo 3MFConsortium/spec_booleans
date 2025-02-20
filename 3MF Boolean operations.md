@@ -46,7 +46,7 @@ THESE MATERIALS ARE PROVIDED "AS IS." The contributors expressly disclaim any wa
 | --- | --- | --- |
 | 1.0.0 | First published version | November 27, 2023 |
 | 1.1.0 | Rename namespace to 3mf.io and clarifications | March 12, 2024 |
-| 1.2.0 | Clarify scope in overview. Material and volumetric properties. Boolean operand on other shapes than tringle mesh  |  |
+| 1.2.0 | Clarify scope in overview. Material and volumetric properties. |  |
 
 # Preface
 
@@ -100,7 +100,7 @@ This extension defines how to combine different objects into a new type of shape
 
 This document describes a new element \<booleanshape> in the \<object> elements choice that specifies a new object type, other than a mesh shape or components. This element is OPTIONAL for producers but MUST be supported by consumers that specify support for the 3MF Boolean Operations Extension.
 
-The \<booleanshape> element defines a new object shape referencing a base object to perform boolean operations by the shapes referenced by the \<boolean> elements.
+The \<booleanshape> element defines a new object shape referencing a base object to perform boolean operations by the meshes referenced by the \<boolean> elements.
 
 This is a non-backwards compatible change since it declares a different type of object. Therefore, a 3MF package which uses *booleanshape* objects MUST enlist the 3MF Boolean Operations Extension as “required extension”, as defined in the core specification.
 
@@ -175,7 +175,7 @@ Element \<boolean>
 
 The \<boolean> element selects a pre-defined object resource to perform a boolean operation to the base object referenced in the enclosing \<booleanshape> element. The boolean operation is applied in the sequence order of the \<boolean> element.
 
-**objectid** - Selects the object applying the boolean operation. The object MUST be an object of type "model" defining a shape: mesh, or shapes defined in other 3MF extensions. But it MUST NOT select any object combining other objects as _components_ or another _booleanshape_. When used in combination with [the 3MF Production extension](https://github.com/3MFConsortium/spec_production/blob/master/3MF%20Production%20Extension.md), it MUST NOT reference any object containing Alternatives.
+**objectid** - Selects the object with the mesh to apply the boolean operation. The object MUST be only a triangle mesh object of type "model", and MUST NOT contain shapes defined in any other extension. When used in combination with [the 3MF Production extension](https://github.com/3MFConsortium/spec_production/blob/master/3MF%20Production%20Extension.md), it MUST NOT reference any object containing Alternatives.
 
 **transform** - The transform to apply to the selected object before the boolean operation.
 
