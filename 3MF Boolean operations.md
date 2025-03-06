@@ -114,9 +114,9 @@ Element \<object>
 
 ![Object](images/2.object.png)
 
-The \<object> element is enhanced with an additional element \<booleanshape> in the object choice, declaring that the object represents a *boolean shape* defining boolean operations, instead of a *mesh shape* or *components* defining assemblies, This extends [the 3MF Core Specification object resources](https://github.com/3MFConsortium/spec_core/blob/1.2.3/3MF%20Core%20Specification.md#chapter-4-object-resources)
+The \<object> element is enhanced with an additional element \<booleanshape> in the object choice, declaring that the object represents a *boolean shape* defining boolean operations, instead of a *mesh shape* or *components* defining assemblies, This extends [the 3MF Core Specification object resources](https://github.com/3MFConsortium/spec_core/blob/1.4.0/3MF%20Core%20Specification.md#chapter-4-object-resources)
 
-Similarly as defined in [the 3MF Core Specification object resources](https://github.com/3MFConsortium/spec_core/blob/1.2.3/3MF%20Core%20Specification.md#chapter-4-object-resources), producers MUST NOT assign pid or pindex attributes to objects that contain *booleanshape*. This ensures that an object with no material will not be split into two representations with different materials due to being referenced as a boolean in multiple objects.
+Similarly as defined in [the 3MF Core Specification object resources](https://github.com/3MFConsortium/spec_core/blob/1.4.0/3MF%20Core%20Specification.md#chapter-4-object-resources), producers MUST NOT assign pid or pindex attributes to objects that contain *booleanshape*. This ensures that an object with no material will not be split into two representations with different materials due to being referenced as a boolean in multiple objects.
 
 ## 2.1. Boolean Shape
 
@@ -138,7 +138,7 @@ The optional \<booleanshape> element contains one or more \<boolean> elements to
 
 **operation** - The boolean operation to perform. The options for the boolean shapes are the following:
 
-1.	*union*. The resulting object shape is defined as the merger of the shapes. The resulting object surface property is defined by the property of the surface property defining the outer surface, as defined by [the 3MF Core Specification overlapping order](https://github.com/3MFConsortium/spec_core/blob/1.2.3/3MF%20Core%20Specification.md#412-overlapping-order). The material and the volumetric properties in the overlapped volume are defined by the ones in last overlapping object in that volume, or none if last overlapping object has no material or volumetric property defined. 
+1.	*union*. The resulting object shape is defined as the merger of the shapes. The resulting object surface property is defined by the property of the surface property defining the outer surface, as defined by [the 3MF Core Specification overlapping order](https://github.com/3MFConsortium/spec_core/blob/1.4.0/3MF%20Core%20Specification.md#412-overlapping-order). The material and the volumetric properties in the overlapped volume are defined by the ones in last overlapping object in that volume, or none if last overlapping object has no material or volumetric property defined. 
 
     union(base,a,b,c) = base Ս (a Ս b Ս c) = ((base Ս a) Ս b) Ս c
 
@@ -181,7 +181,7 @@ The \<boolean> element selects a pre-defined object resource to perform a boolea
 
 **path** - When used in conjunction with [the 3MF Production extension](https://github.com/3MFConsortium/spec_production/blob/master/3MF%20Production%20Extension.md), the "path" attribute references objects in non-root model files. Path is an absolute path to the target model file inside the 3MF container that contains the target object. The use of the path attribute in a \<boolean> element is ONLY valid in the root model file.
 
-The boolean operations are sequentially applied in the order defined by the \<boolean> sequence, and they follow the fill rule conversion defined by [the 3MF Core Specification fill rule](https://github.com/3MFConsortium/spec_core/blob/1.2.3/3MF%20Core%20Specification.md#411-fill-rule).
+The boolean operations are sequentially applied in the order defined by the \<boolean> sequence, and they follow the fill rule conversion defined by [the 3MF Core Specification fill rule](https://github.com/3MFConsortium/spec_core/blob/1.4.0/3MF%20Core%20Specification.md#411-fill-rule).
 
 # Part II. Appendices
 
@@ -339,4 +339,4 @@ Wikipedia, the free encyclopedia: Constructive solid geometry https://en.wikiped
 
 **3MF Core Specification references**
 
-See the 3MF Core Specification references https://github.com/3MFConsortium/spec_core/blob/1.2.3/3MF%20Core%20Specification.md#references.
+See the 3MF Core Specification references https://github.com/3MFConsortium/spec_core/blob/1.4.0/3MF%20Core%20Specification.md#references.
