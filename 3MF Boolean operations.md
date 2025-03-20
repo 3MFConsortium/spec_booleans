@@ -46,7 +46,7 @@ THESE MATERIALS ARE PROVIDED "AS IS." The contributors expressly disclaim any wa
 | --- | --- | --- |
 | 1.0.0 | First published version | November 27, 2023 |
 | 1.1.0 | Rename namespace to 3mf.io and clarifications | March 12, 2024 |
-| 1.1.1 | Clarify scope in overview. Material and volumetric properties. |  |
+| 1.1.1 | Clarify scope in overview. Material and volumetric properties. | March 20, 2025 |
 
 # Preface
 
