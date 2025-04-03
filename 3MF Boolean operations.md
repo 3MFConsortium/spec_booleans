@@ -146,7 +146,7 @@ The optional \<booleanshape> element contains one or more \<boolean> elements to
 
     difference(base,a,b,c) = base - (a Ս b Ս c) = ((base - a) - b) - c
 
-3.  *intersection*. The resulting object shape is defined as the common (clipping) shape in all objects. The resulting object surface property is defined as the object surface property of the object defining the new surface, or no-property when that object has no property defined in the new surface. The material and the volumetric properties in the overlapped volume are defined by the ones in the in last overlapping object in that volume, or none if last overlapping object has no material or volumetric property defined. 
+3.  *intersection*. The resulting object shape is defined as the common (clipping) shape in all objects. The resulting object surface property is defined as the object surface property of the object defining the new surface, or no-property when that object has no property defined in the new surface. The material and volumetric properties in the overlapping volume are determined by the properties of the last overlapping object in that volume. If the last overlapping object does not have material or volumetric properties defined, then no properties are assigned to the overlapping volume.
 
     intersection(base,a,b,c) = base Ո (a Ս b Ս c) = ((base Ո a) Ո b) Ո c
 
