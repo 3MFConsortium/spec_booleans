@@ -13,7 +13,7 @@
 
 
 
-| **Version** | 1.1.0 |
+| **Version** | 1.1.1 |
 | --- | --- |
 | **Status** | Published |
 
@@ -23,6 +23,7 @@ THESE MATERIALS ARE PROVIDED "AS IS." The contributors expressly disclaim any wa
 
 ## Table of Contents
 
+- [Change history](#change-history)
 - [Preface](#preface)
   * [About this Specification](#about-this-specification)
   * [Document Conventions](#document-conventions)
@@ -38,6 +39,14 @@ THESE MATERIALS ARE PROVIDED "AS IS." The contributors expressly disclaim any wa
   * [Appendix C. Standard Namespace](#appendix-c-standard-namespace)
   * [Appendix D: Example file](#appendix-d-example-file)
 - [References](#references)
+
+## Change History
+
+| **Version** | **Changes Description** | **Date** |
+| --- | --- | --- |
+| 1.0.0 | First published version | November 27, 2023 |
+| 1.1.0 | Rename namespace to 3mf.io and clarifications | March 12, 2024 |
+| 1.1.1 | Clarify scope in overview. Material and volumetric properties. | March 20, 2025 |
 
 # Preface
 
@@ -55,37 +64,43 @@ This extension MUST be used only with Core specification 1.x.
 
 ## Document Conventions
 
-See [the 3MF Core Specification conventions](https://github.com/3MFConsortium/spec_core/blob/1.3.0/3MF%20Core%20Specification.md#document-conventions).
+See [the 3MF Core Specification conventions](https://github.com/3MFConsortium/spec_core/blob/1.4.0/3MF%20Core%20Specification.md#document-conventions).
 
 In this extension specification, as an example, the prefix "bo" maps to the xml-namespace "http://schemas.3mf.io/3dmanufacturing/booleanoperations/2023/07". See [Appendix C. Standard Namespace](#appendix-c-standard-namespace).
 
 ## Language Notes
 
-See [the 3MF Core Specification language notes](https://github.com/3MFConsortium/spec_core/blob/1.3.0/3MF%20Core%20Specification.md#language-notes).
+See [the 3MF Core Specification language notes](https://github.com/3MFConsortium/spec_core/blob/1.4.0/3MF%20Core%20Specification.md#language-notes).
 
 ## Software Conformance
 
-See [the 3MF Core Specification software conformance](https://github.com/3MFConsortium/spec_core/blob/1.3.0/3MF%20Core%20Specification.md#software-conformance).
+See [the 3MF Core Specification software conformance](https://github.com/3MFConsortium/spec_core/blob/1.4.0/3MF%20Core%20Specification.md#software-conformance).
 
 # Part I: 3MF Documents
 
 # Chapter 1. Overview of Additions
 
-The 3MF Core Specification defines the \<components> element in the \<object> resource as definition of a tree of different objects to form an assembly, with the intent to allow the reuse of model definitions for an efficient encoding. The resultant shape of a \<components> element is the aggregation of each \<component> object element.
+The 3MF Core Specification defines the \<components> element in the \<object> resource as definition of a tree of different objects to form an assembly, with the intent to allow the reuse of object definitions for an efficient encoding. The resultant shape of a \<components> element is the aggregation of each \<component> object element.
 
-The [section 4.1 Meshes in the core specification](https://github.com/3MFConsortium/spec_core/blob/1.3.0/3MF%20Core%20Specification.md#41-meshes). defines a \<mesh> element as a basic object shape which is defined by triangles. 
+The [section 4.1 Meshes in the core specification](https://github.com/3MFConsortium/spec_core/blob/1.4.0/3MF%20Core%20Specification.md#41-meshes). defines a \<mesh> element as a basic object shape which is defined by triangles. 
 
-This extension defines how to combine different objects into a new type of shape defined as a *booleanshape* object. It is based in Constructive Solid Geometry ([CSG](https://en.wikipedia.org/wiki/Constructive_solid_geometry)).
+The primary goal of this Boolean extension is to create new model object shapes by applying a sequence of boolean operations (union, difference and intersection) with mesh objects to a base object.
 
-However, to limit complexity in the consumer, this spec reduces the CSG scope to an ordered concatenation of boolean shapes (left to right in figure 1.1 below).
+Two target use cases, but not restricted to:
 
-##### Figure 1-1: Concatenating booleans operations.
+*	Multiple labelling copies of a base object by a mesh representation of a label shape.
+*	Repeated patterns defined by meshes applied into a base model. For example, repeated perforations.
 
-![CSG binary sequence](images/1.1_Csg_sequence.png)
+
+This extension defines how to combine different objects into a new type of shape defined as a *booleanshape* object. It defines a simple mechanism to concatenate a series of boolean operations (left to right in figure 1.1 below) into a base model.
+
+##### Figure 1-1: Concatenating boolean operations.
+
+![Boolean sequence](images/1.1_boolean_sequence.png)
 
 This document describes a new element \<booleanshape> in the \<object> elements choice that specifies a new object type, other than a mesh shape or components. This element is OPTIONAL for producers but MUST be supported by consumers that specify support for the 3MF Boolean Operations Extension.
 
-The \<booleanshape> element defines a new object shape referencing a base object to perform boolean operations by the meshes defined in the \<boolean> elements.
+The \<booleanshape> element defines a new object shape referencing a base object to perform boolean operations by the meshes referenced by the \<boolean> elements.
 
 This is a non-backwards compatible change since it declares a different type of object. Therefore, a 3MF package which uses *booleanshape* objects MUST enlist the 3MF Boolean Operations Extension as “required extension”, as defined in the core specification.
 
@@ -99,9 +114,9 @@ Element \<object>
 
 ![Object](images/2.object.png)
 
-The \<object> element is enhanced with an additional element \<booleanshape> in the object choice, declaring that the object represents a *boolean shape* defining boolean operations, instead of a *mesh shape* or *components* defining assemblies, This extends [the 3MF Core Specification object resources](https://github.com/3MFConsortium/spec_core/blob/1.2.3/3MF%20Core%20Specification.md#chapter-4-object-resources)
+The \<object> element is enhanced with an additional element \<booleanshape> in the object choice, declaring that the object represents a *boolean shape* defining boolean operations, instead of a *mesh shape* or *components* defining assemblies, This extends [the 3MF Core Specification object resources](https://github.com/3MFConsortium/spec_core/blob/1.4.0/3MF%20Core%20Specification.md#chapter-4-object-resources)
 
-Similarly as defined in [the 3MF Core Specification object resources](https://github.com/3MFConsortium/spec_core/blob/1.2.3/3MF%20Core%20Specification.md#chapter-4-object-resources), producers MUST NOT assign pid or pindex attributes to objects that contain *booleanshape*. This ensures that an object with no material will not be split into two representations with different materials due to being referenced as a boolean in multiple objects.
+Similarly as defined in [the 3MF Core Specification object resources](https://github.com/3MFConsortium/spec_core/blob/1.4.0/3MF%20Core%20Specification.md#chapter-4-object-resources), producers MUST NOT assign pid or pindex attributes to objects that contain *booleanshape*. This ensures that an object with no material will not be split into two representations with different materials due to being referenced as a boolean in multiple objects.
 
 ## 2.1. Boolean Shape
 
@@ -123,7 +138,7 @@ The optional \<booleanshape> element contains one or more \<boolean> elements to
 
 **operation** - The boolean operation to perform. The options for the boolean shapes are the following:
 
-1.	*union*. The resulting object shape is defined as the merger of the shapes. The resulting object surface property is defined by the property of the surface property defining the outer surface, as defined by [the 3MF Core Specification overlapping order](https://github.com/3MFConsortium/spec_core/blob/1.2.3/3MF%20Core%20Specification.md#412-overlapping-order)
+1.	*union*. The resulting object shape is defined as the merger of the shapes. The resulting object surface property is defined by the property of the surface property defining the outer surface, as defined by [the 3MF Core Specification overlapping order](https://github.com/3MFConsortium/spec_core/blob/1.4.0/3MF%20Core%20Specification.md#412-overlapping-order). The material and volumetric properties in the overlapping volume are determined by the properties of the last overlapping object in that volume. If the last overlapping object does not have material or volumetric properties defined, then no properties are assigned to the overlapping volume.
 
     union(base,a,b,c) = base Ս (a Ս b Ս c) = ((base Ս a) Ս b) Ս c
 
@@ -131,7 +146,7 @@ The optional \<booleanshape> element contains one or more \<boolean> elements to
 
     difference(base,a,b,c) = base - (a Ս b Ս c) = ((base - a) - b) - c
 
-3.  *intersection*. The resulting object shape is defined as the common (clipping) shape in all objects. The resulting object surface property is defined as the object surface property of the object defining the new surface, or no-property when that object has no property defined in the new surface.
+3.  *intersection*. The resulting object shape is defined as the common (clipping) shape in all objects. The resulting object surface property is defined as the object surface property of the object defining the new surface, or no-property when that object has no property defined in the new surface. The material and volumetric properties in the overlapping volume are determined by the properties of the last overlapping object in that volume. If the last overlapping object does not have material or volumetric properties defined, then no properties are assigned to the overlapping volume.
 
     intersection(base,a,b,c) = base Ո (a Ս b Ս c) = ((base Ո a) Ո b) Ո c
 
@@ -139,7 +154,7 @@ The optional \<booleanshape> element contains one or more \<boolean> elements to
 
 **path** - When used in conjunction with [the 3MF Production extension](https://github.com/3MFConsortium/spec_production/blob/master/3MF%20Production%20Extension.md), the "path" attribute references objects in non-root model files. Path is an absolute path to the target model file inside the 3MF container that contains the target object. The use of the path attribute in a \<booleanshape> element is ONLY valid in the root model file.
 
-The following diagrams, from the ***CSG*** Wikipedia, show the three operations:
+The following diagrams, from the ***CSG*** Wikipedia, show the three boolean operations defined in this specification:
 
 | ![operation = union](images/Boolean_union.png) | ![operation = difference](images/Boolean_difference.png) | ![operation = intersection](images/Boolean_intersect.png) |
 | :---: | :---: | :---: |
@@ -166,13 +181,13 @@ The \<boolean> element selects a pre-defined object resource to perform a boolea
 
 **path** - When used in conjunction with [the 3MF Production extension](https://github.com/3MFConsortium/spec_production/blob/master/3MF%20Production%20Extension.md), the "path" attribute references objects in non-root model files. Path is an absolute path to the target model file inside the 3MF container that contains the target object. The use of the path attribute in a \<boolean> element is ONLY valid in the root model file.
 
-The boolean operations are sequentially applied in the order defined by the \<boolean> sequence, and they follow the fill rule conversion defined by [the 3MF Core Specification fill rule](https://github.com/3MFConsortium/spec_core/blob/1.2.3/3MF%20Core%20Specification.md#411-fill-rule).
+The boolean operations are sequentially applied in the order defined by the \<boolean> sequence, and they follow the fill rule conversion defined by [the 3MF Core Specification fill rule](https://github.com/3MFConsortium/spec_core/blob/1.4.0/3MF%20Core%20Specification.md#411-fill-rule).
 
 # Part II. Appendices
 
 ## Appendix A. Glossary
 
-See [the 3MF Core Specification glossary](https://github.com/3MFConsortium/spec_core/blob/1.3.0/3MF%20Core%20Specification.md#appendix-a-glossary).
+See [the 3MF Core Specification glossary](https://github.com/3MFConsortium/spec_core/blob/1.4.0/3MF%20Core%20Specification.md#appendix-a-glossary).
 
 ## Appendix B. 3MF XSD Schema
 
@@ -324,4 +339,4 @@ Wikipedia, the free encyclopedia: Constructive solid geometry https://en.wikiped
 
 **3MF Core Specification references**
 
-See the 3MF Core Specification references https://github.com/3MFConsortium/spec_core/blob/1.2.3/3MF%20Core%20Specification.md#references.
+See the 3MF Core Specification references https://github.com/3MFConsortium/spec_core/blob/1.4.0/3MF%20Core%20Specification.md#references.
