@@ -138,7 +138,7 @@ The optional \<booleanshape> element contains one or more \<boolean> elements to
 
 **operation** - The boolean operation to perform. The options for the boolean shapes are the following:
 
-1.	*union*. The resulting object shape is defined as the merger of the shapes. The resulting object surface property is defined by the property of the surface property defining the outer surface, as defined by [the 3MF Core Specification overlapping order](https://github.com/3MFConsortium/spec_core/blob/1.4.0/3MF%20Core%20Specification.md#412-overlapping-order). The material and the volumetric properties in the overlapped volume are defined by the ones in last overlapping object in that volume, or none if last overlapping object has no material or volumetric property defined. 
+1.	*union*. The resulting object shape is defined as the merger of the shapes. The resulting object surface property is defined by the property of the surface property defining the outer surface, as defined by [the 3MF Core Specification overlapping order](https://github.com/3MFConsortium/spec_core/blob/1.4.0/3MF%20Core%20Specification.md#412-overlapping-order). The material and volumetric properties in the overlapping volume are determined by the properties of the last overlapping object in that volume. If the last overlapping object does not have material or volumetric properties defined, then no properties are assigned to the overlapping volume.
 
     union(base,a,b,c) = base Ս (a Ս b Ս c) = ((base Ս a) Ս b) Ս c
 
